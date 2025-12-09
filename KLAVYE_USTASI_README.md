@@ -187,4 +187,5 @@ Bu oyun eğitim amaçlı geliştirilmiştir ve ücretsiz olarak kullanılabilir.
 **Geliştirme Tarihi**: Aralık 2024  
 **Hedef Sınıf**: 5. Sınıf  
 **Konu**: Bilişim Teknolojileri - Klavye Kullanımı  
-**Platform**: Web Tarayıcı (Standalone HTML)
+**Platform**: Web Tarayıcı (Standalone HTML)  
+**Tasarım ve Geliştirme**: Maria TEKEL
