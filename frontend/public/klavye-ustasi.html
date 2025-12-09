@@ -769,26 +769,20 @@
             document.getElementById('helpModal').classList.remove('active');
         }
         
-        function showTeacherPanel() {
-            document.getElementById('teacherModal').classList.add('active');
-        }
-        
-        function closeTeacherPanel() {
-            document.getElementById('teacherModal').classList.remove('active');
-        }
-        
-        // ===== AYARLAR =====
-        
-        function toggleKeySetting() {
-            showKeyNames = document.getElementById('showKeyNames').checked;
-        }
-        
-        function toggleTimeSetting() {
-            unlimitedTime = document.getElementById('unlimitedTime').checked;
-        }
+        // ===== SES KONTROLÜ =====
         
         function toggleSound() {
-            soundEnabled = document.getElementById('soundEnabled').checked;
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const status = document.getElementById('soundStatus');
+            
+            if (soundEnabled) {
+                icon.textContent = '🔊';
+                status.textContent = 'Açık';
+            } else {
+                icon.textContent = '🔇';
+                status.textContent = 'Kapalı';
+            }
         }
         
         // ===== OYUN BAŞLATMA VE YÖNETİMİ =====
