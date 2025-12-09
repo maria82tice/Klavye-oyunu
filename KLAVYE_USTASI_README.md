@@ -139,12 +139,10 @@ Etaplar öğrenme piramidini takip eder:
 
 ## 📊 Kapsanan İçerik
 
-### Özel Tuşlar (31 adet)
+### Özel Tuşlar (17 adet)
 - Esc, Tab, CapsLock, Shift, Control, Alt, AltGraph
-- Enter, Backspace, Delete, Insert
-- Home, End, PageUp, PageDown
-- NumLock, PrintScreen
-- F1-F6 fonksiyon tuşları
+- Enter, Backspace, Delete, Insert, PrintScreen
+- Ok tuşları: ↑ ↓ ← →
 
 ### Klavye Kısayolları (13 adet)
 - Ctrl + C, V, X (Kopyala, Yapıştır, Kes)
