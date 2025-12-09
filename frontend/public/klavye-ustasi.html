@@ -1348,13 +1348,22 @@
             
             const pressedKey = e.key;
             
+            // AltGr için özel kontrol
+            const isAltGrPressed = e.key === 'AltGraph' || 
+                                   (e.code === 'AltRight' && e.location === 2) ||
+                                   (e.key === 'Alt' && e.location === 2);
+            
             // Aktif düşen tuşlar arasında eşleşme ara (büyük/küçük harf duyarsız)
             for (let i = 0; i < activeKeys.length; i++) {
                 const keyObj = activeKeys[i];
                 const keyObjLower = (keyObj.char || '').toLowerCase();
                 const pressedLower = (pressedKey || '').toLowerCase();
                 
-                if (!keyObj.matched && keyObjLower === pressedLower) {
+                // AltGraph kontrolü ekle
+                const isMatch = (keyObjLower === pressedLower) || 
+                               (keyObj.char === 'AltGraph' && isAltGrPressed);
+                
+                if (!keyObj.matched && isMatch) {
                     // Eşleşme bulundu!
                     keyObj.matched = true;
                     keyObj.element.remove();
