@@ -1406,10 +1406,12 @@
             
             const pressedKey = e.key;
             
-            // AltGr için özel kontrol
+            // AltGr için kapsamlı kontrol - boşluk sağındaki tuş
             const isAltGrPressed = e.key === 'AltGraph' || 
-                                   (e.code === 'AltRight' && e.location === 2) ||
-                                   (e.key === 'Alt' && e.location === 2);
+                                   e.code === 'AltRight' ||
+                                   (e.altKey && e.location === 2) ||
+                                   (e.altKey && e.keyCode === 225) ||
+                                   (e.which === 225);
             
             // Aktif düşen tuşlar arasında eşleşme ara (büyük/küçük harf duyarsız)
             for (let i = 0; i < activeKeys.length; i++) {
