@@ -138,10 +138,12 @@ Etaplar öğrenme piramidini takip eder:
 
 ## 📊 Kapsanan İçerik
 
-### Özel Tuşlar (17 adet)
+### Özel Tuşlar (15 adet)
 - Esc, Tab, CapsLock, Shift, Control, Alt, AltGraph
-- Enter, Backspace, Delete, Insert, PrintScreen
+- Enter, Backspace, Delete, Boşluk
 - Ok tuşları: ↑ ↓ ← →
+
+**Not**: PrintScreen ve Insert tuşları tarayıcı tarafından engellendiği için oyuna dahil edilmemiştir.
 
 ### Klavye Kısayolları (12 adet)
 - Ctrl + C, V, X (Kopyala, Yapıştır, Kes)
