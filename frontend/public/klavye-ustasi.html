@@ -1385,6 +1385,10 @@
             pressedKeys.clear();
             expectedCombo = currentQuestion.keys.map(k => k.toLowerCase());
             
+            // Önceki event listener'ları temizle
+            document.removeEventListener('keydown', stage4ComboHandler);
+            document.removeEventListener('keyup', stage4ComboKeyUp);
+            
             document.addEventListener('keydown', stage4ComboHandler);
             document.addEventListener('keyup', stage4ComboKeyUp);
         }
