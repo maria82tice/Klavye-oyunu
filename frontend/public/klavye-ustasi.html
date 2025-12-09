@@ -944,8 +944,21 @@
         }
         
         function gameOver() {
+            // Tüm interval'leri temizle
             clearInterval(timerInterval);
             clearInterval(fallingKeysInterval);
+            
+            // Tüm event listener'ları temizle
+            document.removeEventListener('keydown', stage1KeyHandler);
+            document.removeEventListener('keydown', stage2KeyHandler);
+            document.removeEventListener('keydown', stage2ComboHandler);
+            document.removeEventListener('keyup', stage2ComboKeyUp);
+            document.removeEventListener('keydown', stage3KeyHandler);
+            document.removeEventListener('keydown', stage4ComboHandler);
+            document.removeEventListener('keyup', stage4ComboKeyUp);
+            document.removeEventListener('keydown', stage5ComboHandler);
+            document.removeEventListener('keyup', stage5ComboKeyUp);
+            
             playSound('gameover');
             
             // İstatistikleri hazırla
