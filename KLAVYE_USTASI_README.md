@@ -168,12 +168,12 @@ Oyun sonu ekranında:
 3. Yanlış tuşa basarsan öğren ve tekrar dene
 4. Combo yapmak için ardışık doğru cevaplar ver
 
-### Öğretmenler İçin
-1. İlk oturumlarda pratik modunu kullanın
-2. Öğrencilerin klavyeye bakmasını teşvik edin
-3. Grup içi yarışmalar düzenleyin
-4. Hata analizi raporlarını inceleyin
-5. Düzenli pratik yapılmasını sağlayın
+### Öğretmenler ve Veliler İçin
+1. Öğrencilerin klavyeye bakmadan tuşları hissetmesini teşvik edin
+2. Düzenli pratik yapılmasını sağlayın (günde 10-15 dakika)
+3. Grup içi yarışmalar düzenleyin (en yüksek skor)
+4. Hata analizi raporlarını birlikte inceleyin
+5. Evde de oynanabilir - internet bağlantısı gerektirmez
 
 ## 📝 Lisans ve Kullanım
 
