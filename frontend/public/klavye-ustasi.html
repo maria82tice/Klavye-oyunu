@@ -1001,7 +1001,8 @@
             
             startTimer(25);
             
-            // Klavye dinleyicisi ekle
+            // Önceki event listener'ı temizle ve yenisini ekle
+            document.removeEventListener('keydown', stage1KeyHandler);
             document.addEventListener('keydown', stage1KeyHandler);
         }
         
