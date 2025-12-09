@@ -1042,10 +1042,16 @@
             document.removeEventListener('keydown', stage1KeyHandler);
             clearInterval(timerInterval);
             
+            // AltGr için özel kontrol (bazı tarayıcılarda "AltGraph", bazılarında sağ Alt)
+            const isAltGrPressed = e.key === 'AltGraph' || 
+                                   (e.code === 'AltRight' && e.location === 2) ||
+                                   (e.key === 'Alt' && e.location === 2);
+            
             if (e.key === currentQuestion.key || 
                 (currentQuestion.key === ' ' && e.key === ' ') ||
                 (currentQuestion.key === 'Control' && e.key === 'Control') ||
-                (currentQuestion.key === 'CapsLock' && e.code === 'CapsLock')) {
+                (currentQuestion.key === 'CapsLock' && e.code === 'CapsLock') ||
+                (currentQuestion.key === 'AltGraph' && isAltGrPressed)) {
                 handleCorrectAnswer();
             } else {
                 handleWrongAnswer(e.key);
