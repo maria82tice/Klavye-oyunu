@@ -630,6 +630,8 @@
         let pressedKeys = new Set(); // Şu anda basılı olan tuşlar
         let waitingForCombo = false; // Kısayol kombinasyonu bekleniyor mu?
         let expectedCombo = null; // Beklenen kısayol kombinasyonu
+        let gameStartTime = 0; // Oyun başlangıç zamanı
+        let totalPlayTime = 0; // Toplam oyun süresi (saniye)
         
         // Düşen tuşlar modu için
         let fallingKeysInterval = null;
