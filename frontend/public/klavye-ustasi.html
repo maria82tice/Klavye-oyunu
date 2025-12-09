@@ -1332,12 +1332,15 @@
         function stage3KeyHandler(e) {
             e.preventDefault();
             
-            const pressedChar = e.key;
+            const pressedKey = e.key;
             
-            // Aktif düşen tuşlar arasında eşleşme ara
+            // Aktif düşen tuşlar arasında eşleşme ara (büyük/küçük harf duyarsız)
             for (let i = 0; i < activeKeys.length; i++) {
                 const keyObj = activeKeys[i];
-                if (!keyObj.matched && keyObj.char.toLowerCase() === pressedChar.toLowerCase()) {
+                const keyObjLower = (keyObj.char || '').toLowerCase();
+                const pressedLower = (pressedKey || '').toLowerCase();
+                
+                if (!keyObj.matched && keyObjLower === pressedLower) {
                     // Eşleşme bulundu!
                     keyObj.matched = true;
                     keyObj.element.remove();
