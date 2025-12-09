@@ -881,7 +881,7 @@
             if (combo > maxCombo) maxCombo = combo;
             
             // Puan hesapla: Kalan süre × 10 + combo bonusu
-            const timeBonus = unlimitedTime ? 100 : timeRemaining * 10;
+            const timeBonus = timeRemaining * 10;
             const comboBonus = combo >= 3 ? combo * 20 : 0;
             const totalPoints = points || (timeBonus + comboBonus);
             
