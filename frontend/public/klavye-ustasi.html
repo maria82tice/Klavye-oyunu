@@ -977,12 +977,17 @@
             playSound('gameover');
             
             // İstatistikleri hazırla
-            document.getElementById('gameOverTitle').textContent = 
-                lives > 0 ? '🎉 Tebrikler! Etabı Tamamladın!' : '🎮 Oyun Bitti!';
-            document.getElementById('finalScore').textContent = `${score} Puan`;
+            totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
+            const minutes = Math.floor(totalPlayTime / 60);
+            const seconds = totalPlayTime % 60;
+            
+            document.getElementById('gameOverTitle').textContent = '🎮 Oyun Bitti!';
+            document.getElementById('finalScore').textContent = `⏱️ ${minutes}:${seconds.toString().padStart(2, '0')} Dakika`;
             
             const statsContent = document.getElementById('statsContent');
             statsContent.innerHTML = `
+                <li>⏱️ Toplam Süre: ${minutes} dakika ${seconds} saniye</li>
+                <li>🎯 Toplam Puan: ${score}</li>
                 <li>📝 Toplam Soru: ${questionsAnswered}</li>
                 <li>✅ Doğru Cevap: ${correctAnswers}</li>
                 <li>❌ Yanlış Cevap: ${wrongAnswers}</li>
