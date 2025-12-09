@@ -1137,14 +1137,28 @@
         }
         
         function showStage2Question() {
-            if (stage2CurrentIndex >= stage2Questions.length || lives <= 0) {
+            // Can kontrolü
+            if (lives <= 0) {
                 gameOver();
                 return;
+            }
+            
+            // Sorular bittiyse yeniden karıştır
+            if (stage2CurrentIndex >= stage2Questions.length) {
+                stage2Questions.sort(() => Math.random() - 0.5);
+                stage2CurrentIndex = 0;
+                currentLevel++;
+                updateDisplay();
+                playSound('levelup');
+                showFeedback(true, `🎉 Seviye ${currentLevel}!`);
             }
             
             questionsAnswered++;
             currentQuestion = stage2Questions[stage2CurrentIndex];
             stage2CurrentIndex++;
+            
+            // Toplam süreyi güncelle
+            totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
             
             const hintText = currentQuestion.keys.length > 1 
                 ? '💡 İpucu: Bu büyük harf veya özel karakter için Shift tuşunu kullanman gerekebilir!'
@@ -1153,6 +1167,9 @@
             document.getElementById('gameContent').innerHTML = `
                 <div class="key-display">${currentQuestion.display}</div>
                 <div class="hint">${hintText}</div>
+                <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
+                    ⏱️ Oyun Süresi: ${totalPlayTime} saniye
+                </div>
             `;
             
             const duration = Math.max(15, 25 - currentLevel * 2);
