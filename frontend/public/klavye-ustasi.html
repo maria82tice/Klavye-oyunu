@@ -1147,19 +1147,29 @@
         
         function stage2ComboHandler(e) {
             e.preventDefault();
+            
+            // Shift tek başına hata vermesin, kombinasyon bekleniyor
+            if (e.key === 'Shift') {
+                pressedKeys.add(e.key);
+                return; // Henüz kontrol etme, ikinci tuşu bekle
+            }
+            
             pressedKeys.add(e.key);
             
             // Shift + harf kontrolü
-            const needsShift = currentQuestion.keys[0] === 'Shift';
             const expectedChar = currentQuestion.keys[1];
             
-            if (pressedKeys.has('Shift') && pressedKeys.size === 2) {
+            // Shift basılı mı ve doğru harf mi kontrol et
+            if (pressedKeys.has('Shift') && pressedKeys.size >= 2) {
                 document.removeEventListener('keydown', stage2ComboHandler);
                 document.removeEventListener('keyup', stage2ComboKeyUp);
                 clearInterval(timerInterval);
                 
-                // Doğru kombinasyon mu?
-                if (pressedKeys.has(expectedChar)) {
+                // Doğru kombinasyon mu? (büyük/küçük harf duyarlı olmadan)
+                const pressedChar = e.key.toLowerCase();
+                const expectedLower = expectedChar.toLowerCase();
+                
+                if (pressedChar === expectedLower) {
                     handleCorrectAnswer();
                 } else {
                     handleWrongAnswer(Array.from(pressedKeys).join('+'));
