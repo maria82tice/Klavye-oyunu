@@ -1086,6 +1086,11 @@
             const duration = Math.max(15, 25 - currentLevel * 2);
             startTimer(duration);
             
+            // Önceki event listener'ları temizle
+            document.removeEventListener('keydown', stage2KeyHandler);
+            document.removeEventListener('keydown', stage2ComboHandler);
+            document.removeEventListener('keyup', stage2ComboKeyUp);
+            
             if (currentQuestion.keys.length > 1) {
                 // Shift kombinasyonu gerekiyor
                 pressedKeys.clear();
