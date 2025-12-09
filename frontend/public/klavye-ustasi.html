@@ -1042,15 +1042,18 @@
             document.removeEventListener('keydown', stage1KeyHandler);
             clearInterval(timerInterval);
             
-            // AltGr için özel kontrol (bazı tarayıcılarda "AltGraph", bazılarında sağ Alt)
+            // AltGr için çok kapsamlı kontrol - boşluk sağındaki tuş
             const isAltGrPressed = e.key === 'AltGraph' || 
-                                   (e.code === 'AltRight' && e.location === 2) ||
-                                   (e.key === 'Alt' && e.location === 2);
+                                   e.code === 'AltRight' ||
+                                   (e.altKey && e.location === 2) ||
+                                   (e.altKey && e.keyCode === 225) ||
+                                   (e.which === 225);
             
             if (e.key === currentQuestion.key || 
                 (currentQuestion.key === ' ' && e.key === ' ') ||
-                (currentQuestion.key === 'Control' && e.key === 'Control') ||
+                (currentQuestion.key === 'Control' && (e.key === 'Control' || e.ctrlKey)) ||
                 (currentQuestion.key === 'CapsLock' && e.code === 'CapsLock') ||
+                (currentQuestion.key === 'Alt' && e.altKey && e.location !== 2) ||
                 (currentQuestion.key === 'AltGraph' && isAltGrPressed)) {
                 handleCorrectAnswer();
             } else {
