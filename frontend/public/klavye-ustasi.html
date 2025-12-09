@@ -1221,21 +1221,85 @@
             const container = document.getElementById('fallingArea');
             if (!container) return;
             
+            // Kullanılabilir özel tuşlar (ok tuşları sembol olarak gösterilecek)
+            const specialKeyPool = [
+                { display: 'Esc', key: 'Escape' },
+                { display: 'Tab', key: 'Tab' },
+                { display: 'Enter', key: 'Enter' },
+                { display: '⌫', key: 'Backspace' },
+                { display: 'Del', key: 'Delete' },
+                { display: '↑', key: 'ArrowUp' },
+                { display: '↓', key: 'ArrowDown' },
+                { display: '←', key: 'ArrowLeft' },
+                { display: '→', key: 'ArrowRight' }
+            ];
+            
             // Rastgele karakter seç (seviyeye göre)
-            let char;
+            let charData;
             if (currentLevel === 1) {
-                char = characters[Math.floor(Math.random() * 20)]; // Sadece basit karakterler
+                // Seviye 1: Sadece basit harfler ve sayılar
+                const pool = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 20);
+                const char = pool[Math.floor(Math.random() * pool.length)];
+                charData = { display: char, key: char };
             } else if (currentLevel === 2) {
-                const pool = [...characters.slice(0, 30), ...shiftCharacters.slice(0, 3).map(s => s.display)];
-                char = pool[Math.floor(Math.random() * pool.length)];
+                // Seviye 2: Türkçe karakterler ekleniyor
+                const pool = [...characters.slice(0, 30)];
+                const char = pool[Math.floor(Math.random() * pool.length)];
+                charData = { display: char, key: char };
+            } else if (currentLevel === 3) {
+                // Seviye 3: Shift karakterleri ekleniyor
+                const pool = [...characters, ...shiftCharacters.slice(0, 3).map(s => ({ display: s.display, key: s.keys[1] }))];
+                charData = pool[Math.floor(Math.random() * pool.length)];
+                if (typeof charData === 'string') {
+                    charData = { display: charData, key: charData };
+                }
             } else {
-                const pool = [...characters, ...shiftCharacters.map(s => s.display)];
-                char = pool[Math.floor(Math.random() * pool.length)];
+                // Seviye 4+: Özel tuşlar da ekleniyor
+                const pool = [
+                    ...characters.map(c => ({ display: c, key: c })),
+                    ...shiftCharacters.map(s => ({ display: s.display, key: s.keys[1] })),
+                    ...specialKeyPool
+                ];
+                charData = pool[Math.floor(Math.random() * pool.length)];
+            }
+            
+            // Son düşen 3 tuştan birine denk gelmemesini sağla
+            let attempts = 0;
+            while (lastFallingKeys.includes(charData.display) && attempts < 10) {
+                if (currentLevel === 1) {
+                    const pool = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 20);
+                    const char = pool[Math.floor(Math.random() * pool.length)];
+                    charData = { display: char, key: char };
+                } else if (currentLevel === 2) {
+                    const pool = [...characters.slice(0, 30)];
+                    const char = pool[Math.floor(Math.random() * pool.length)];
+                    charData = { display: char, key: char };
+                } else if (currentLevel === 3) {
+                    const pool = [...characters, ...shiftCharacters.slice(0, 3).map(s => ({ display: s.display, key: s.keys[1] }))];
+                    charData = pool[Math.floor(Math.random() * pool.length)];
+                    if (typeof charData === 'string') {
+                        charData = { display: charData, key: charData };
+                    }
+                } else {
+                    const pool = [
+                        ...characters.map(c => ({ display: c, key: c })),
+                        ...shiftCharacters.map(s => ({ display: s.display, key: s.keys[1] })),
+                        ...specialKeyPool
+                    ];
+                    charData = pool[Math.floor(Math.random() * pool.length)];
+                }
+                attempts++;
+            }
+            
+            // Son tuş listesini güncelle (maksimum 3 tuş hatırla)
+            lastFallingKeys.push(charData.display);
+            if (lastFallingKeys.length > 3) {
+                lastFallingKeys.shift();
             }
             
             const keyDiv = document.createElement('div');
             keyDiv.className = 'falling-key';
-            keyDiv.textContent = char;
+            keyDiv.textContent = charData.display;
             keyDiv.style.left = Math.random() * (container.offsetWidth - 80) + 'px';
             
             const duration = Math.max(3, 6 - currentLevel * 0.5);
@@ -1244,7 +1308,7 @@
             container.appendChild(keyDiv);
             
             // Tuş nesnesini kaydet
-            const keyObj = { element: keyDiv, char: char, matched: false };
+            const keyObj = { element: keyDiv, char: charData.key, display: charData.display, matched: false };
             activeKeys.push(keyObj);
             
             // Animasyon bitince kaldır
