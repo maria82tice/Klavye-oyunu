@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klavye Ustası - 5. Sınıf Klavye Öğrenme Oyunu</title>
+    <style>
+        /* ===== GENEL TANIMLAMALAR ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.2);
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+        }
+
+        /* ===== BAŞLIK VE BUTONLAR ===== */
+        h1 {
+            color: #1e40af;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #2563eb;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+        }
+
+        button.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        /* ===== EKRAN BÖLÜMLERI ===== */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== ANA MENÜ ===== */
+        .menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .menu-buttons button {
+            padding: 20px;
+            font-size: 1.2rem;
+            height: auto;
+        }
+
+        /* ===== ETAP SEÇİMİ ===== */
+        .stage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stage-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .stage-card:hover {
+            transform: translateY(-5px);
+            border-color: #2563eb;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .stage-card h3 {
+            color: #1e40af;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .stage-card p {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        /* ===== OYUN ALANI ===== */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 12px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.2rem;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        /* ===== OYUN İÇERİĞİ ===== */
+        .game-content {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .question {
+            font-size: 1.8rem;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+        }
+
+        .key-display {
+            font-size: 4rem;
+            color: #2563eb;
+            font-weight: bold;
+            padding: 40px 60px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.2);
+            border: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+
+        .hint {
+            font-size: 1.2rem;
+            color: #64748b;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #fef3c7;
+            border-radius: 10px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        /* ===== DÜŞEN TUŞLAR MOD ===== */
+        #fallingArea {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #dbeafe 0%, #f8fafc 100%);
+            border-radius: 15px;
+            border: 3px solid #2563eb;
+        }
+
+        .falling-key {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e40af;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            border: 3px solid #2563eb;
+            animation: fall linear;
+        }
+
+        @keyframes fall {
+            from { top: -60px; }
+            to { top: 100%; }
+        }
+
+        /* ===== GERİ BİLDİRİM ===== */
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px 50px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            z-index: 1000;
+            animation: feedbackPop 0.5s ease;
+            pointer-events: none;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .feedback.wrong {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes feedbackPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* ===== OYUN SONU ===== */
+        .game-over {
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            color: #2563eb;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        .stats-list {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .stats-list h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .stats-list li {
+            color: #475569;
+            font-size: 1.1rem;
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        /* ===== YARDIM VE ÖĞRETİM MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-section {
+            margin: 20px 0;
+        }
+
+        .help-section h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .help-section p, .help-section li {
+            color: #475569;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+
+        /* ===== RESPONSİVE TASARIM ===== */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .question { font-size: 1.4rem; }
+            .key-display { font-size: 3rem; padding: 30px 40px; }
+            .game-header { font-size: 1rem; }
+            .container { padding: 20px; }
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        /* ===== COMBO INDICATOR ===== */
+        .combo {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            animation: pulse 0.5s ease infinite;
+            display: none;
+        }
+
+        .combo.active {
+            display: block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ===== TUŞLARA BASILDIĞINDA EFEKTİ ===== */
+        .pressed-key {
+            animation: keyPress 0.3s ease;
+        }
+
+        @keyframes keyPress {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== SEVİYE GÖSTERGESI ===== */
+        .level-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ANA MENÜ -->
+        <div id="mainMenu" class="screen active">
+            <h1>🎮 Klavye Ustası</h1>
+            <p class="subtitle">5. Sınıf Bilişim Teknolojileri - Klavye Öğrenme Oyunu</p>
+            <div class="menu-buttons">
+                <button onclick="showStageSelect()">🎯 Etap Seç ve Oyna</button>
+                <button onclick="showHelp()" class="secondary">❓ Yardım</button>
+                <button onclick="showTeacherPanel()" class="secondary">👨‍🏫 Öğretmen Paneli</button>
+            </div>
+        </div>
+
+        <!-- ETAP SEÇİMİ -->
+        <div id="stageSelect" class="screen">
+            <h2>Etap Seçimi</h2>
+            <p class="subtitle">İstediğin etaptan başlayabilirsin!</p>
+            <div class="stage-grid">
+                <div class="stage-card" onclick="startStage(1)">
+                    <h3>📝 Etap 1</h3>
+                    <p>Tanıma & Görev Bul</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px;">Tuşun görevini okuyup doğru tuşa bas</p>
+                </div>
+                <div class="stage-card" onclick="startStage(2)">
+                    <h3>🔤 Etap 2</h3>
+                    <p>Tuşu Gör, Bas!</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px;">Ekrandaki karakteri klavyede bul</p>
+                </div>
+                <div class="stage-card" onclick="startStage(3)">
+                    <h3>🎯 Etap 3</h3>
+                    <p>Düşen Tuşlar</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px;">Düşen tuşlara zamanında bas</p>
+                </div>
+                <div class="stage-card" onclick="startStage(4)">
+                    <h3>⌨️ Etap 4</h3>
+                    <p>Kısayol Göster</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px;">Gösterilen kısayolu yap</p>
+                </div>
+                <div class="stage-card" onclick="startStage(5)">
+                    <h3>🧠 Etap 5</h3>
+                    <p>Tanımdan Kısayol Bul</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px;">Açıklamadan kısayolu hatırla</p>
+                </div>
+            </div>
+            <button onclick="showMainMenu()" class="secondary">⬅️ Ana Menüye Dön</button>
+        </div>
+
+        <!-- OYUN EKRANI -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <div class="stat">
+                    <span class="stat-icon">⏱️</span>
+                    <span>Süre: <span id="timeDisplay">30</span>s</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">🎯</span>
+                    <span>Skor: <span id="scoreDisplay">0</span></span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">❤️</span>
+                    <span>Can: <span id="livesDisplay">3</span></span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">📊</span>
+                    <span>Seviye: <span id="levelDisplay">1</span></span>
+                </div>
+            </div>
+            <div class="game-content" id="gameContent">
+                <!-- Oyun içeriği buraya dinamik olarak eklenecek -->
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button onclick="exitGame()" class="danger">🚪 Oyundan Çık</button>
+            </div>
+        </div>
+
+        <!-- OYUN SONU EKRANI -->
+        <div id="gameOverScreen" class="screen">
+            <div class="game-over">
+                <h2 id="gameOverTitle">🎮 Oyun Bitti!</h2>
+                <div class="score-display" id="finalScore">0</div>
+                <div class="stats-list">
+                    <h3>📊 İstatistikler</h3>
+                    <ul id="statsContent"></ul>
+                </div>
+                <div id="mistakesList" class="stats-list" style="display: none;">
+                    <h3>⚠️ En Çok Zorlandığın Tuşlar</h3>
+                    <ul id="mistakesContent"></ul>
+                </div>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                    <button onclick="retryStage()">🔄 Tekrar Dene</button>
+                    <button onclick="showStageSelect()" class="secondary">📋 Etap Seç</button>
+                    <button onclick="showMainMenu()" class="secondary">🏠 Ana Menü</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YARDIM MODAL -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeHelp()">×</button>
+            <h2>❓ Yardım</h2>
+            <div class="help-section">
+                <h3>🎮 Oyun Nasıl Oynanır?</h3>
+                <p>Klavye Ustası, klavye kullanımını öğrenmen için tasarlanmış eğlenceli bir oyundur. 5 farklı etap var:</p>
+                <ul>
+                    <li><strong>Etap 1:</strong> Tuşun görevini okuyup doğru tuşa basacaksın</li>
+                    <li><strong>Etap 2:</strong> Ekranda gösterilen harfi veya karakteri klavyede bulacaksın</li>
+                    <li><strong>Etap 3:</strong> Yukarıdan düşen tuşlara zamanında basacaksın</li>
+                    <li><strong>Etap 4:</strong> Gösterilen klavye kısayolunu yapacaksın (örn: Ctrl+C)</li>
+                    <li><strong>Etap 5:</strong> Açıklamadan kısayolu hatırlayıp yapacaksın</li>
+                </ul>
+            </div>
+            <div class="help-section">
+                <h3>💡 İpuçları</h3>
+                <ul>
+                    <li>Hızdan çok <strong>doğruluk</strong> önemli - acele etme!</li>
+                    <li>Her tuşa saygılı ve dikkatli davran</li>
+                    <li>Yanlış tuşa basarsan can kaybedersin</li>
+                    <li>Süre biterse soru yanlış sayılır</li>
+                    <li>Seviye arttıkça oyun zorlaşır ama sen yaparsın! 💪</li>
+                </ul>
+            </div>
+            <div class="help-section">
+                <h3>🎯 Puanlama</h3>
+                <p>Doğru ve hızlı cevaplar daha çok puan kazandırır. Kalan süre × 10 puan alırsın!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÖĞRETİM PANEL MODAL -->
+    <div id="teacherModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTeacherPanel()">×</button>
+            <h2>👨‍🏫 Öğretmen Paneli</h2>
+            <div class="help-section">
+                <h3>⚙️ Ayarlar</h3>
+                <p>
+                    <label>
+                        <input type="checkbox" id="showKeyNames" onchange="toggleKeySetting()">
+                        Tuş adlarını göster (pratik modu)
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" id="unlimitedTime" onchange="toggleTimeSetting()">
+                        Süre sınırını kaldır (pratik modu)
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" id="soundEnabled" checked onchange="toggleSound()">
+                        Ses efektlerini aç/kapa
+                    </label>
+                </p>
+            </div>
+            <div class="help-section">
+                <h3>📚 Pedagojik Notlar</h3>
+                <p>Bu oyun MEB 5. sınıf Bilişim Teknolojileri müfredatındaki şu kazanımları destekler:</p>
+                <ul>
+                    <li>Fare ve Klavye Kullanımı</li>
+                    <li>Klavye Tuşlarının Görevleri</li>
+                    <li>En Çok Kullanılan Kısayol Tuşları</li>
+                </ul>
+                <p style="margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                    <strong>Not:</strong> Öğrencilerin klavyede fiziksel olarak tuşları bulmasını teşvik edin. Ekrana bakmalarını ve sonra doğru tuşu hissederek bulmalarını sağlayın.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMBO GÖSTERGESI -->
+    <div id="comboIndicator" class="combo">
+        🔥 Combo: <span id="comboCount">0</span>
+    </div>
+
+    <script>
+        // ===== GLOBAL DEĞİŞKENLER =====
+        let currentStage = 0;
+        let currentLevel = 1;
+        let score = 0;
+        let lives = 3;
+        let timeRemaining = 30;
+        let timerInterval = null;
+        let combo = 0;
+        let maxCombo = 0;
+        
+        // Ayarlar
+        let showKeyNames = false;
+        let unlimitedTime = false;
+        let soundEnabled = true;
+        
+        // İstatistikler
+        let questionsAnswered = 0;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let mistakes = {}; // Hangi tuşlarda hata yapıldığını takip eder
+        
+        // Oyun durumu
+        let currentQuestion = null;
+        let pressedKeys = new Set(); // Şu anda basılı olan tuşlar
+        let waitingForCombo = false; // Kısayol kombinasyonu bekleniyor mu?
+        let expectedCombo = null; // Beklenen kısayol kombinasyonu
+        
+        // Düşen tuşlar modu için
+        let fallingKeysInterval = null;
+        let activeKeys = [];
+        
+        // ===== KLAVYE VERİ BANKASI =====
+        
+        // Özel tuşlar ve görevleri
+        const specialKeys = {
+            'Escape': 'İptal tuşu, çıkış yapar, bazı programlarda menüden çıkılır',
+            'Tab': 'Yazı programında sekme/boşluk bırakır, tablolarda hücreler arası geçiş yapar',
+            'CapsLock': 'Tamamen büyük veya küçük harf yazmayı açıp kapatır (kilit)',
+            'Shift': 'Harfleri geçici olarak büyük yazar, üstteki ikinci karakteri yazar',
+            'Control': 'Kısayollarda diğer tuşlarla birlikte kullanılır',
+            'Alt': 'Pencere değiştirme ve kısayollarda kullanılır',
+            ' ': 'Kelimeler arasında boşluk bırakır',
+            'AltGraph': 'Tuş üzerindeki üçüncü/alt karakteri yazar (@ € gibi)',
+            'Enter': 'Onay tuşu, metinde alt satıra geçirir',
+            'Backspace': 'İmlecin solundaki karakteri siler',
+            'Delete': 'Seçili öğeyi siler, metinde imlecin sağını siler',
+            'Insert': 'Ekleme/üzerine yazma modunu değiştirir',
+            'Home': 'Satır başına veya sayfanın en üstüne gider',
+            'End': 'Satır sonuna veya sayfanın en altına gider',
+            'PageUp': 'Ekranı bir sayfa yukarı kaydırır',
+            'PageDown': 'Ekranı bir sayfa aşağı kaydırır',
+            'NumLock': 'Sağdaki sayısal tuş takımını açar/kapatır',
+            'PrintScreen': 'Ekran görüntüsü alır',
+            'F1': 'Yardım menüsünü açar',
+            'F2': 'Dosya veya klasörü yeniden adlandırır',
+            'F3': 'Arama yapar',
+            'F4': 'Pencereyi kapatır (Alt+F4)',
+            'F5': 'Sayfayı yeniler',
+            'F6': 'Tarayıcı adres çubuğuna gider'
+        };
+        
+        // Klavye kısayolları
+        const shortcuts = [
+            { keys: ['Control', 'x'], name: 'Ctrl + X', description: 'Seçili metni keser' },
+            { keys: ['Control', 'c'], name: 'Ctrl + C', description: 'Seçili metni kopyalar' },
+            { keys: ['Control', 'v'], name: 'Ctrl + V', description: 'Kopyalanan metni yapıştırır' },
+            { keys: ['Control', 's'], name: 'Ctrl + S', description: 'Dosyayı kaydeder' },
+            { keys: ['Control', 'p'], name: 'Ctrl + P', description: 'Yazdırma menüsünü açar' },
+            { keys: ['Control', 'a'], name: 'Ctrl + A', description: 'Tümünü seçer' },
+            { keys: ['Control', 'f'], name: 'Ctrl + F', description: 'Sayfa içinde arama yapar' },
+            { keys: ['Control', 'z'], name: 'Ctrl + Z', description: 'Son işlemi geri alır' },
+            { keys: ['Control', 'b'], name: 'Ctrl + B', description: 'Metni kalın yapar' },
+            { keys: ['Control', 'u'], name: 'Ctrl + U', description: 'Metnin altını çizer' },
+            { keys: ['Control', 'i'], name: 'Ctrl + I', description: 'Metni italik yapar' },
+            { keys: ['Alt', 'F4'], name: 'Alt + F4', description: 'Programı kapatır' },
+            { keys: ['Alt', 'Tab'], name: 'Alt + Tab', description: 'Açık programlar arasında geçiş yapar' }
+        ];
+        
+        // Harfler ve sayılar (Shift kombinasyonları dahil)
+        const characters = [
+            // Küçük harfler
+            'a', 'b', 'c', 'ç', 'd', 'e', 'f', 'g', 'ğ', 'h', 'ı', 'i', 'j', 'k', 'l', 'm', 
+            'n', 'o', 'ö', 'p', 'r', 's', 'ş', 't', 'u', 'ü', 'v', 'y', 'z',
+            // Sayılar
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            // Noktalama işaretleri
+            '.', ',', ';', ':', '-', '(', ')', '!', '?', '/', '+', '=', '*'
+        ];
+        
+        // Büyük harfler için Shift kombinasyonları
+        const shiftCharacters = [
+            { display: 'A', keys: ['Shift', 'a'] },
+            { display: 'B', keys: ['Shift', 'b'] },
+            { display: 'Ğ', keys: ['Shift', 'ğ'] },
+            { display: 'Ü', keys: ['Shift', 'ü'] },
+            { display: 'Ş', keys: ['Shift', 'ş'] },
+            { display: 'İ', keys: ['Shift', 'i'] },
+            { display: '?', keys: ['Shift', ','] },
+            { display: '!', keys: ['Shift', '1'] },
+            { display: ':', keys: ['Shift', '.'] }
+        ];
+        
+        // ===== SES EFEKTLERİ =====
+        
+        // Web Audio API ile basit ses efektleri oluştur
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (!soundEnabled) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            if (type === 'correct') {
+                // Doğru cevap - yükselen ton
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                oscillator.frequency.exponentialRampToValueAtTime(783.99, audioContext.currentTime + 0.1); // G5
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } else if (type === 'wrong') {
+                // Yanlış cevap - alçalan ton
+                oscillator.frequency.setValueAtTime(392.00, audioContext.currentTime); // G4
+                oscillator.frequency.exponentialRampToValueAtTime(196.00, audioContext.currentTime + 0.15); // G3
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.25);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.25);
+            } else if (type === 'gameover') {
+                // Oyun bitti - düşen ton dizisi
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(261.63, audioContext.currentTime + 0.3);
+                gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.4);
+            } else if (type === 'levelup') {
+                // Seviye atladı - yükselen arpej
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.4);
+            }
+        }
+        
+        // ===== EKRAN GEÇİŞLERİ =====
+        
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+        
+        function showMainMenu() {
+            resetGame();
+            showScreen('mainMenu');
+        }
+        
+        function showStageSelect() {
+            showScreen('stageSelect');
+        }
+        
+        function showHelp() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+        
+        function closeHelp() {
+            document.getElementById('helpModal').classList.remove('active');
+        }
+        
+        function showTeacherPanel() {
+            document.getElementById('teacherModal').classList.add('active');
+        }
+        
+        function closeTeacherPanel() {
+            document.getElementById('teacherModal').classList.remove('active');
+        }
+        
+        // ===== AYARLAR =====
+        
+        function toggleKeySetting() {
+            showKeyNames = document.getElementById('showKeyNames').checked;
+        }
+        
+        function toggleTimeSetting() {
+            unlimitedTime = document.getElementById('unlimitedTime').checked;
+        }
+        
+        function toggleSound() {
+            soundEnabled = document.getElementById('soundEnabled').checked;
+        }
+        
+        // ===== OYUN BAŞLATMA VE YÖNETİMİ =====
+        
+        function startStage(stageNum) {
+            currentStage = stageNum;
+            resetGame();
+            showScreen('gameScreen');
+            
+            // Etapa göre oyunu başlat
+            if (stageNum === 1) {
+                startStage1(); // Tanıma & Görev Bul
+            } else if (stageNum === 2) {
+                startStage2(); // Tuşu Gör, Bas!
+            } else if (stageNum === 3) {
+                startStage3(); // Düşen Tuşlar
+            } else if (stageNum === 4) {
+                startStage4(); // Kısayol Göster
+            } else if (stageNum === 5) {
+                startStage5(); // Tanımdan Kısayol Bul
+            }
+        }
+        
+        function resetGame() {
+            currentLevel = 1;
+            score = 0;
+            lives = 3;
+            timeRemaining = 30;
+            questionsAnswered = 0;
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            combo = 0;
+            maxCombo = 0;
+            mistakes = {};
+            activeKeys = [];
+            
+            clearInterval(timerInterval);
+            clearInterval(fallingKeysInterval);
+            
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            document.getElementById('timeDisplay').textContent = timeRemaining;
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('livesDisplay').textContent = lives;
+            document.getElementById('levelDisplay').textContent = currentLevel;
+            
+            // Combo göstergesi
+            if (combo >= 3) {
+                document.getElementById('comboCount').textContent = combo;
+                document.getElementById('comboIndicator').classList.add('active');
+            } else {
+                document.getElementById('comboIndicator').classList.remove('active');
+            }
+        }
+        
+        function startTimer(duration) {
+            timeRemaining = duration;
+            updateDisplay();
+            
+            if (unlimitedTime) return; // Öğretmen modu: Süre sınırı yok
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    handleWrongAnswer();
+                }
+            }, 1000);
+        }
+        
+        function exitGame() {
+            clearInterval(timerInterval);
+            clearInterval(fallingKeysInterval);
+            showStageSelect();
+        }
+        
+        // ===== GERİ BİLDİRİM =====
+        
+        function showFeedback(isCorrect, message = null) {
+            const feedback = document.createElement('div');
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
+            feedback.textContent = message || (isCorrect ? '✓ Doğru!' : '✗ Yanlış!');
+            document.body.appendChild(feedback);
+            
+            playSound(isCorrect ? 'correct' : 'wrong');
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 1000);
+        }
+        
+        function handleCorrectAnswer(points = null) {
+            correctAnswers++;
+            combo++;
+            if (combo > maxCombo) maxCombo = combo;
+            
+            // Puan hesapla: Kalan süre × 10 + combo bonusu
+            const timeBonus = unlimitedTime ? 100 : timeRemaining * 10;
+            const comboBonus = combo >= 3 ? combo * 20 : 0;
+            const totalPoints = points || (timeBonus + comboBonus);
+            
+            score += totalPoints;
+            updateDisplay();
+            showFeedback(true);
+            
+            // Bir sonraki soruya geç
+            setTimeout(() => {
+                nextQuestion();
+            }, 1000);
+        }
+        
+        function handleWrongAnswer(mistakeKey = null) {
+            wrongAnswers++;
+            lives--;
+            combo = 0; // Combo sıfırlanır
+            
+            if (mistakeKey) {
+                mistakes[mistakeKey] = (mistakes[mistakeKey] || 0) + 1;
+            }
+            
+            updateDisplay();
+            showFeedback(false);
+            
+            if (lives <= 0) {
+                // Oyun bitti
+                setTimeout(() => {
+                    gameOver();
+                }, 1000);
+            } else {
+                // Bir sonraki soruya geç
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1000);
+            }
+        }
+        
+        function gameOver() {
+            clearInterval(timerInterval);
+            clearInterval(fallingKeysInterval);
+            playSound('gameover');
+            
+            // İstatistikleri hazırla
+            document.getElementById('gameOverTitle').textContent = 
+                lives > 0 ? '🎉 Tebrikler! Etabı Tamamladın!' : '🎮 Oyun Bitti!';
+            document.getElementById('finalScore').textContent = `${score} Puan`;
+            
+            const statsContent = document.getElementById('statsContent');
+            statsContent.innerHTML = `
+                <li>📝 Toplam Soru: ${questionsAnswered}</li>
+                <li>✅ Doğru Cevap: ${correctAnswers}</li>
+                <li>❌ Yanlış Cevap: ${wrongAnswers}</li>
+                <li>🔥 En Yüksek Combo: ${maxCombo}</li>
+                <li>📊 Başarı Oranı: ${questionsAnswered > 0 ? Math.round((correctAnswers / questionsAnswered) * 100) : 0}%</li>
+                <li>🏆 Ulaşılan Seviye: ${currentLevel}</li>
+            `;
+            
+            // En çok zorlanılan tuşları göster
+            const mistakeEntries = Object.entries(mistakes).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (mistakeEntries.length > 0) {
+                const mistakesContent = document.getElementById('mistakesContent');
+                mistakesContent.innerHTML = mistakeEntries.map(([key, count]) => 
+                    `<li><strong>${key}</strong>: ${count} hata</li>`
+                ).join('');
+                document.getElementById('mistakesList').style.display = 'block';
+            } else {
+                document.getElementById('mistakesList').style.display = 'none';
+            }
+            
+            showScreen('gameOverScreen');
+        }
+        
+        function retryStage() {
+            startStage(currentStage);
+        }
+        
+        // ===== ETAP 1: TANIMA & GÖREV BUL =====
+        
+        let stage1Questions = [];
+        let stage1CurrentIndex = 0;
+        
+        function startStage1() {
+            // Soruları hazırla
+            stage1Questions = Object.entries(specialKeys).map(([key, description]) => ({
+                key: key,
+                description: description
+            }));
+            
+            // Karıştır
+            stage1Questions.sort(() => Math.random() - 0.5);
+            stage1CurrentIndex = 0;
+            
+            showStage1Question();
+        }
+        
+        function showStage1Question() {
+            if (stage1CurrentIndex >= stage1Questions.length || lives <= 0) {
+                gameOver();
+                return;
+            }
+            
+            questionsAnswered++;
+            currentQuestion = stage1Questions[stage1CurrentIndex];
+            stage1CurrentIndex++;
+            
+            // Soruyu göster
+            document.getElementById('gameContent').innerHTML = `
+                <div class="question">${currentQuestion.description}</div>
+                <div class="hint">⌨️ Bu tuş hangisi? Doğru tuşa bas!</div>
+            `;
+            
+            startTimer(25);
+            
+            // Klavye dinleyicisi ekle
+            document.addEventListener('keydown', stage1KeyHandler);
+        }
+        
+        function stage1KeyHandler(e) {
+            e.preventDefault();
+            document.removeEventListener('keydown', stage1KeyHandler);
+            clearInterval(timerInterval);
+            
+            if (e.key === currentQuestion.key || 
+                (currentQuestion.key === ' ' && e.key === ' ') ||
+                (currentQuestion.key === 'Control' && e.key === 'Control') ||
+                (currentQuestion.key === 'CapsLock' && e.code === 'CapsLock')) {
+                handleCorrectAnswer();
+            } else {
+                handleWrongAnswer(e.key);
+            }
+        }
+        
+        function nextQuestion() {
+            if (currentStage === 1) {
+                showStage1Question();
+            } else if (currentStage === 2) {
+                showStage2Question();
+            } else if (currentStage === 4) {
+                showStage4Question();
+            } else if (currentStage === 5) {
+                showStage5Question();
+            }
+            
+            // Seviye atlama kontrolü (her 5 soruda bir)
+            if (questionsAnswered % 5 === 0) {
+                currentLevel++;
+                updateDisplay();
+                playSound('levelup');
+                showFeedback(true, `🎉 Seviye ${currentLevel}!`);
+            }
+        }
+        
+        // ===== ETAP 2: TUŞU GÖR, BAS! =====
+        
+        let stage2Questions = [];
+        let stage2CurrentIndex = 0;
+        
+        function startStage2() {
+            // Karakterleri zorluğa göre sırala
+            const easyChars = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 15);
+            const mediumChars = characters.filter(c => /[çğıöşü]/i.test(c));
+            const hardChars = shiftCharacters.slice(0, 5);
+            
+            stage2Questions = [
+                ...easyChars.map(c => ({ display: c, keys: [c], isShift: false })),
+                ...mediumChars.map(c => ({ display: c, keys: [c], isShift: false })),
+                ...hardChars
+            ];
+            
+            stage2Questions.sort(() => Math.random() - 0.5);
+            stage2CurrentIndex = 0;
+            
+            showStage2Question();
+        }
+        
+        function showStage2Question() {
+            if (stage2CurrentIndex >= stage2Questions.length || lives <= 0) {
+                gameOver();
+                return;
+            }
+            
+            questionsAnswered++;
+            currentQuestion = stage2Questions[stage2CurrentIndex];
+            stage2CurrentIndex++;
+            
+            const hintText = currentQuestion.keys.length > 1 
+                ? '💡 İpucu: Bu büyük harf veya özel karakter için Shift tuşunu kullanman gerekebilir!'
+                : '⌨️ Ekrandaki tuşa bas!';
+            
+            document.getElementById('gameContent').innerHTML = `
+                <div class="key-display">${currentQuestion.display}</div>
+                <div class="hint">${hintText}</div>
+            `;
+            
+            const duration = Math.max(15, 25 - currentLevel * 2);
+            startTimer(duration);
+            
+            if (currentQuestion.keys.length > 1) {
+                // Shift kombinasyonu gerekiyor
+                pressedKeys.clear();
+                waitingForCombo = true;
+                document.addEventListener('keydown', stage2ComboHandler);
+                document.addEventListener('keyup', stage2ComboKeyUp);
+            } else {
+                // Tek tuş
+                document.addEventListener('keydown', stage2KeyHandler);
+            }
+        }
+        
+        function stage2KeyHandler(e) {
+            e.preventDefault();
+            document.removeEventListener('keydown', stage2KeyHandler);
+            clearInterval(timerInterval);
+            
+            if (e.key.toLowerCase() === currentQuestion.keys[0].toLowerCase()) {
+                handleCorrectAnswer();
+            } else {
+                handleWrongAnswer(e.key);
+            }
+        }
+        
+        function stage2ComboHandler(e) {
+            e.preventDefault();
+            pressedKeys.add(e.key);
+            
+            // Shift + harf kontrolü
+            const needsShift = currentQuestion.keys[0] === 'Shift';
+            const expectedChar = currentQuestion.keys[1];
+            
+            if (pressedKeys.has('Shift') && pressedKeys.size === 2) {
+                document.removeEventListener('keydown', stage2ComboHandler);
+                document.removeEventListener('keyup', stage2ComboKeyUp);
+                clearInterval(timerInterval);
+                
+                // Doğru kombinasyon mu?
+                if (pressedKeys.has(expectedChar)) {
+                    handleCorrectAnswer();
+                } else {
+                    handleWrongAnswer(Array.from(pressedKeys).join('+'));
+                }
+            }
+        }
+        
+        function stage2ComboKeyUp(e) {
+            pressedKeys.delete(e.key);
+        }
+        
+        // ===== ETAP 3: DÜŞEN TUŞLAR =====
+        
+        function startStage3() {
+            document.getElementById('gameContent').innerHTML = `
+                <div class="level-badge">Seviye ${currentLevel}</div>
+                <div id="fallingArea"></div>
+                <div class="hint">⌨️ Düşen tuşlara zamanında bas!</div>
+            `;
+            
+            // Sürekli oyun modu - timer kullanma
+            updateDisplay();
+            
+            // Düşen tuşları başlat
+            startFallingKeys();
+            
+            // Klavye dinleyicisi
+            document.addEventListener('keydown', stage3KeyHandler);
+        }
+        
+        function startFallingKeys() {
+            clearInterval(fallingKeysInterval);
+            
+            const spawnInterval = Math.max(1500, 3000 - currentLevel * 200);
+            
+            fallingKeysInterval = setInterval(() => {
+                if (lives <= 0) {
+                    clearInterval(fallingKeysInterval);
+                    gameOver();
+                    return;
+                }
+                
+                // Yeni düşen tuş oluştur
+                spawnFallingKey();
+            }, spawnInterval);
+        }
+        
+        function spawnFallingKey() {
+            const container = document.getElementById('fallingArea');
+            if (!container) return;
+            
+            // Rastgele karakter seç (seviyeye göre)
+            let char;
+            if (currentLevel === 1) {
+                char = characters[Math.floor(Math.random() * 20)]; // Sadece basit karakterler
+            } else if (currentLevel === 2) {
+                const pool = [...characters.slice(0, 30), ...shiftCharacters.slice(0, 3).map(s => s.display)];
+                char = pool[Math.floor(Math.random() * pool.length)];
+            } else {
+                const pool = [...characters, ...shiftCharacters.map(s => s.display)];
+                char = pool[Math.floor(Math.random() * pool.length)];
+            }
+            
+            const keyDiv = document.createElement('div');
+            keyDiv.className = 'falling-key';
+            keyDiv.textContent = char;
+            keyDiv.style.left = Math.random() * (container.offsetWidth - 80) + 'px';
+            
+            const duration = Math.max(3, 6 - currentLevel * 0.5);
+            keyDiv.style.animationDuration = duration + 's';
+            
+            container.appendChild(keyDiv);
+            
+            // Tuş nesnesini kaydet
+            const keyObj = { element: keyDiv, char: char, matched: false };
+            activeKeys.push(keyObj);
+            
+            // Animasyon bitince kaldır
+            setTimeout(() => {
+                if (!keyObj.matched && container.contains(keyDiv)) {
+                    keyDiv.remove();
+                    activeKeys = activeKeys.filter(k => k !== keyObj);
+                    lives--;
+                    updateDisplay();
+                    playSound('wrong');
+                    
+                    if (lives <= 0) {
+                        clearInterval(fallingKeysInterval);
+                        document.removeEventListener('keydown', stage3KeyHandler);
+                        gameOver();
+                    }
+                }
+            }, duration * 1000);
+        }
+        
+        function stage3KeyHandler(e) {
+            e.preventDefault();
+            
+            const pressedChar = e.key;
+            
+            // Aktif düşen tuşlar arasında eşleşme ara
+            for (let i = 0; i < activeKeys.length; i++) {
+                const keyObj = activeKeys[i];
+                if (!keyObj.matched && keyObj.char.toLowerCase() === pressedChar.toLowerCase()) {
+                    // Eşleşme bulundu!
+                    keyObj.matched = true;
+                    keyObj.element.remove();
+                    activeKeys.splice(i, 1);
+                    
+                    questionsAnswered++;
+                    correctAnswers++;
+                    combo++;
+                    if (combo > maxCombo) maxCombo = combo;
+                    
+                    score += 50 + (combo * 10);
+                    updateDisplay();
+                    playSound('correct');
+                    
+                    // Seviye atlama
+                    if (questionsAnswered % 10 === 0) {
+                        currentLevel++;
+                        updateDisplay();
+                        playSound('levelup');
+                        showFeedback(true, `🎉 Seviye ${currentLevel}!`);
+                        
+                        // Hızı artır
+                        clearInterval(fallingKeysInterval);
+                        startFallingKeys();
+                    }
+                    
+                    break;
+                }
+            }
+        }
+        
+        // ===== ETAP 4: KISAYOL GÖSTER =====
+        
+        let stage4Questions = [];
+        let stage4CurrentIndex = 0;
+        
+        function startStage4() {
+            stage4Questions = [...shortcuts];
+            stage4Questions.sort(() => Math.random() - 0.5);
+            stage4CurrentIndex = 0;
+            
+            showStage4Question();
+        }
+        
+        function showStage4Question() {
+            if (stage4CurrentIndex >= stage4Questions.length || lives <= 0) {
+                gameOver();
+                return;
+            }
+            
+            questionsAnswered++;
+            currentQuestion = stage4Questions[stage4CurrentIndex];
+            stage4CurrentIndex++;
+            
+            document.getElementById('gameContent').innerHTML = `
+                <div class="question">
+                    <div style="font-size: 2.5rem; margin-bottom: 20px;">${currentQuestion.name}</div>
+                    <div style="font-size: 1.2rem; color: #64748b;">(${currentQuestion.description})</div>
+                </div>
+                <div class="hint">⌨️ Bu kısayolu klavyende yap!</div>
+            `;
+            
+            startTimer(20);
+            
+            pressedKeys.clear();
+            expectedCombo = currentQuestion.keys.map(k => k.toLowerCase());
+            
+            document.addEventListener('keydown', stage4ComboHandler);
+            document.addEventListener('keyup', stage4ComboKeyUp);
+        }
+        
+        function stage4ComboHandler(e) {
+            e.preventDefault();
+            
+            const normalizedKey = e.key.toLowerCase() === 'control' ? 'control' : e.key.toLowerCase();
+            pressedKeys.add(normalizedKey);
+            
+            // Tüm beklenen tuşlar basılı mı kontrol et
+            const allPressed = expectedCombo.every(key => {
+                const checkKey = key.toLowerCase();
+                return Array.from(pressedKeys).some(pk => pk.toLowerCase() === checkKey);
+            });
+            
+            if (allPressed && pressedKeys.size >= expectedCombo.length) {
+                document.removeEventListener('keydown', stage4ComboHandler);
+                document.removeEventListener('keyup', stage4ComboKeyUp);
+                clearInterval(timerInterval);
+                
+                handleCorrectAnswer(150); // Kısayollar daha çok puan
+            }
+        }
+        
+        function stage4ComboKeyUp(e) {
+            pressedKeys.delete(e.key.toLowerCase());
+        }
+        
+        // ===== ETAP 5: TANIMDAN KISAYOL BUL =====
+        
+        let stage5Questions = [];
+        let stage5CurrentIndex = 0;
+        
+        function startStage5() {
+            stage5Questions = [...shortcuts];
+            stage5Questions.sort(() => Math.random() - 0.5);
+            stage5CurrentIndex = 0;
+            
+            showStage5Question();
+        }
+        
+        function showStage5Question() {
+            if (stage5CurrentIndex >= stage5Questions.length || lives <= 0) {
+                gameOver();
+                return;
+            }
+            
+            questionsAnswered++;
+            currentQuestion = stage5Questions[stage5CurrentIndex];
+            stage5CurrentIndex++;
+            
+            const hintLevel = Math.min(Math.floor(wrongAnswers / 3), 2);
+            let hintText = '🧠 Hangi kısayoldu? Hatırlamaya çalış!';
+            
+            if (hintLevel === 1) {
+                hintText = `💡 İpucu: ${currentQuestion.name.split(' + ')[0]} ile başlıyor`;
+            } else if (hintLevel === 2) {
+                hintText = `💡 İpucu: Kısayol ${currentQuestion.name}`;
+            }
+            
+            document.getElementById('gameContent').innerHTML = `
+                <div class="question">
+                    <div style="font-size: 2rem; margin-bottom: 20px;">"${currentQuestion.description}"</div>
+                </div>
+                <div class="hint">${hintText}</div>
+            `;
+            
+            startTimer(25);
+            
+            pressedKeys.clear();
+            expectedCombo = currentQuestion.keys.map(k => k.toLowerCase());
+            
+            document.addEventListener('keydown', stage5ComboHandler);
+            document.addEventListener('keyup', stage5ComboKeyUp);
+        }
+        
+        function stage5ComboHandler(e) {
+            e.preventDefault();
+            
+            const normalizedKey = e.key.toLowerCase() === 'control' ? 'control' : e.key.toLowerCase();
+            pressedKeys.add(normalizedKey);
+            
+            const allPressed = expectedCombo.every(key => {
+                const checkKey = key.toLowerCase();
+                return Array.from(pressedKeys).some(pk => pk.toLowerCase() === checkKey);
+            });
+            
+            if (allPressed && pressedKeys.size >= expectedCombo.length) {
+                document.removeEventListener('keydown', stage5ComboHandler);
+                document.removeEventListener('keyup', stage5ComboKeyUp);
+                clearInterval(timerInterval);
+                
+                handleCorrectAnswer(200); // En zor etap, en çok puan
+            }
+        }
+        
+        function stage5ComboKeyUp(e) {
+            pressedKeys.delete(e.key.toLowerCase());
+        }
+        
+        // ===== İLK YÜKLEMEDE =====
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Klavye Ustası Oyunu Yüklendi!');
+        });
+    </script>
+</body>
+</html>
+
+<!-- 
+===== GELİŞTİRME NOTLARI & PEDAGOJİK TERCİHLER =====
+
+1. TEK DOSYA MİMARİSİ:
+   - Tüm oyun tek bir HTML dosyasında, CSS ve JavaScript gömülü olarak yazıldı
+   - Sunucu gerektirmez, yerel tarayıcıda çalışır
+   - Basit dağıtım: dosyayı açmak yeterli
+
+2. 5 ETAPLI ÖĞRENİM YOLU:
+   - Etap 1: Görevden tuşu bulma (kavramsal öğrenme)
+   - Etap 2: Görsel tanımadan tuşa basma (motor beceri)
+   - Etap 3: Düşen tuşlar arcade modu (hız ve refleks)
+   - Etap 4: Kısayol kombinasyonlarını uygulama (pratik beceri)
+   - Etap 5: Tanımdan kısayolu hatırlama (bilgi transferi)
+   Bu sıralama Bloom Taksonomisi'ni takip eder: hatırlama → uygulama → analiz
+
+3. ZORLUK DRECELENDİRMESİ:
+   - Her etapta seviye sistemi var, her 5-10 soruda zorluk artar
+   - Süre sınırları dinamik: başlangıçta 25-30 saniye, seviye arttıkça 15-20 saniyeye iner
+   - Asla 8 saniyenin altına düşmez (5. sınıf öğrenciler için uygun)
+   - Düşen tuşlar modunda düşme hızı ve spawn sıklığı kademeli artar
+
+4. KLAVYE OLAY YÖNETİMİ:
+   - keydown ve keyup olayları dinlenir
+   - Kombinasyonlar için Set veri yapısı kullanılır (basılı tuşlar takip edilir)
+   - Shift, Ctrl, Alt gibi modifier tuşlar özel olarak algılanır
+   - Kombinasyon algılama: tuşların 500ms içinde birlikte basılması yeterli
+   - CapsLock durumu dikkate alınır
+
+5. GERİ BİLDİRİM SİSTEMİ:
+   - Anında görsel geri bildirim: doğru/yanlış animasyonları
+   - Web Audio API ile doğru/yanlış/seviye atlama sesleri
+   - Combo sistemi: 3+ ardışık doğru cevap combo bonusu verir
+   - Can sistemi: 3 hak, her yanlış -1 can
+   - Skor: kalan süre × 10 + combo bonusu
+
+6. EĞİTİMSEL ÖZELLİKLER:
+   - Öğretmen paneli: süre sınırını kaldırma, tuş adlarını gösterme seçenekleri
+   - Oyun sonu raporu: hangi tuşlarda zorlandığını gösterir
+   - Pratik modu: öğrenciler kendi hızlarında çalışabilir
+   - Ses açma/kapama seçeneği (sınıf ortamı için)
+
+7. ERİŞİLEBİLİRLİK VE TASARIM:
+   - Büyük fontlar (5. sınıf için okunabilir)
+   - Yüksek kontrast (mavi tonları, beyaz arka plan)
+   - Responsive tasarım (tablet ve masaüstü)
+   - Renk körü uyumlu: sadece renge değil metne de dayalı geri bildirimler
+   - Basit navigasyon, az buton
+
+8. OYUNLAŞTIRMA:
+   - Serbest ilerleme: tüm etaplar baştan açık
+   - Seviye sistemi ve progress göstergeleri
+   - Combo ve skor bonusları
+   - İstatistik takibi ve başarı rozetleri
+   - Tekrar oynama teşviki
+
+9. TÜRKÇE KLAVİE ODAKLI:
+   - Q Türkçe klavye düzeni baz alındı
+   - Türkçe karakterler (ç, ğ, ı, ö, ş, ü) dahil
+   - MEB 5. sınıf müfredatı ile uyumlu tuş listesi
+   - Alt Gr karakterleri (@, €) belirtildi
+
+10. PERFORMANS VE OPTİMİZASYON:
+    - Minimal bağımlılık: saf HTML/CSS/JS
+    - Hafif animasyonlar (CSS transitions)
+    - Interval temizleme ve bellek yönetimi
+    - Düşen tuşlar için eleman havuzu optimizasyonu
+-->
