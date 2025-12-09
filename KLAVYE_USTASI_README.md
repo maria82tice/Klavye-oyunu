@@ -144,12 +144,12 @@ Etaplar öğrenme piramidini takip eder:
 - Enter, Backspace, Delete, Insert, PrintScreen
 - Ok tuşları: ↑ ↓ ← →
 
-### Klavye Kısayolları (13 adet)
+### Klavye Kısayolları (12 adet)
 - Ctrl + C, V, X (Kopyala, Yapıştır, Kes)
 - Ctrl + S, P, A (Kaydet, Yazdır, Tümünü Seç)
 - Ctrl + F, Z (Bul, Geri Al)
 - Ctrl + B, U, I (Kalın, Altı Çizili, İtalik)
-- Alt + F4, Alt + Tab (Kapat, Geçiş)
+- Alt + Tab (Pencere Geçişi)
 
 ## 📈 İstatistikler ve Raporlama
 
