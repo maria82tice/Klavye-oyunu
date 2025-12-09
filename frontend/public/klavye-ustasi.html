@@ -842,8 +842,6 @@
             timeRemaining = duration;
             updateDisplay();
             
-            if (unlimitedTime) return; // Öğretmen modu: Süre sınırı yok
-            
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 timeRemaining--;
