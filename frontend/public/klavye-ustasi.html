@@ -1462,14 +1462,28 @@
         }
         
         function showStage4Question() {
-            if (stage4CurrentIndex >= stage4Questions.length || lives <= 0) {
+            // Can kontrolü
+            if (lives <= 0) {
                 gameOver();
                 return;
+            }
+            
+            // Sorular bittiyse yeniden karıştır
+            if (stage4CurrentIndex >= stage4Questions.length) {
+                stage4Questions.sort(() => Math.random() - 0.5);
+                stage4CurrentIndex = 0;
+                currentLevel++;
+                updateDisplay();
+                playSound('levelup');
+                showFeedback(true, `🎉 Seviye ${currentLevel}!`);
             }
             
             questionsAnswered++;
             currentQuestion = stage4Questions[stage4CurrentIndex];
             stage4CurrentIndex++;
+            
+            // Toplam süreyi güncelle
+            totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
             
             document.getElementById('gameContent').innerHTML = `
                 <div class="question">
@@ -1477,6 +1491,9 @@
                     <div style="font-size: 1.2rem; color: #64748b;">(${currentQuestion.description})</div>
                 </div>
                 <div class="hint">⌨️ Bu kısayolu klavyende yap!</div>
+                <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
+                    ⏱️ Oyun Süresi: ${totalPlayTime} saniye
+                </div>
             `;
             
             startTimer(20);
