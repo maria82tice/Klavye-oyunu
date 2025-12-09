@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AltGr Tuş Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+        }
+        .test-area {
+            border: 3px solid #2563eb;
+            padding: 30px;
+            margin: 20px 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+        .info {
+            background: #dbeafe;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .log {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #1e293b;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        .log div {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 AltGr Tuş Test Aracı</h1>
+        <p style="font-size: 16px; color: #64748b;">
+            <strong>Talimat:</strong> Aşağıdaki mavi alana tıklayın ve klavyenizdeki <strong>boşluk tuşunun SAĞINDAKİ tuşa</strong> (AltGr) basın.
+        </p>
+        
+        <div class="test-area" id="testArea" tabindex="0">
+            👉 Buraya tıklayın ve AltGr tuşuna basın...
+        </div>
+        
+        <div class="info">
+            <strong>Son Basılan Tuş:</strong><br>
+            <div id="lastKey" style="margin-top: 10px;">Henüz tuş basılmadı...</div>
+        </div>
+        
+        <h3>📋 Tuş Basma Geçmişi:</h3>
+        <div class="log" id="logArea"></div>
+        
+        <button onclick="clearLog()" style="margin-top: 20px; padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer;">
+            🗑️ Geçmişi Temizle
+        </button>
+    </div>
+
+    <script>
+        const testArea = document.getElementById('testArea');
+        const lastKeyDiv = document.getElementById('lastKey');
+        const logArea = document.getElementById('logArea');
+        let logCount = 0;
+
+        testArea.addEventListener('keydown', (e) => {
+            e.preventDefault();
+            logCount++;
+            
+            const info = {
+                '#': logCount,
+                'key': e.key,
+                'code': e.code,
+                'keyCode': e.keyCode,
+                'which': e.which,
+                'location': e.location,
+                'altKey': e.altKey,
+                'ctrlKey': e.ctrlKey,
+                'shiftKey': e.shiftKey,
+                'metaKey': e.metaKey
+            };
+            
+            // Son tuş bilgisini göster
+            lastKeyDiv.innerHTML = `
+                <strong style="color: #2563eb;">key:</strong> ${e.key}<br>
+                <strong style="color: #2563eb;">code:</strong> ${e.code}<br>
+                <strong style="color: #2563eb;">keyCode:</strong> ${e.keyCode}<br>
+                <strong style="color: #2563eb;">which:</strong> ${e.which}<br>
+                <strong style="color: #2563eb;">location:</strong> ${e.location}<br>
+                <strong style="color: #2563eb;">altKey:</strong> ${e.altKey}<br>
+                <strong style="color: #2563eb;">ctrlKey:</strong> ${e.ctrlKey}
+            `;
+            
+            // Log'a ekle
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `
+                <strong>#${logCount}</strong> | 
+                key: <span style="color: #fbbf24;">${e.key}</span> | 
+                code: <span style="color: #fbbf24;">${e.code}</span> | 
+                keyCode: <span style="color: #fbbf24;">${e.keyCode}</span> | 
+                location: <span style="color: #fbbf24;">${e.location}</span> | 
+                altKey: <span style="color: ${e.altKey ? '#10b981' : '#ef4444'}">${e.altKey}</span>
+            `;
+            
+            logArea.insertBefore(logEntry, logArea.firstChild);
+            
+            console.log('AltGr Test:', info);
+        });
+        
+        function clearLog() {
+            logArea.innerHTML = '';
+            logCount = 0;
+        }
+        
+        // Sayfa yüklendiğinde test alanına focus
+        testArea.focus();
+    </script>
+</body>
+</html>
