@@ -1154,6 +1154,12 @@
         // ===== ETAP 3: DÜŞEN TUŞLAR =====
         
         function startStage3() {
+            // Önceki event listener'ları ve interval'leri temizle
+            document.removeEventListener('keydown', stage3KeyHandler);
+            clearInterval(fallingKeysInterval);
+            activeKeys = [];
+            lastFallingKeys = [];
+            
             document.getElementById('gameContent').innerHTML = `
                 <div class="level-badge">Seviye ${currentLevel}</div>
                 <div id="fallingArea"></div>
