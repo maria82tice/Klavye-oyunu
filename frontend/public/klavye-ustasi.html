@@ -1030,19 +1030,36 @@
         }
         
         function showStage1Question() {
-            if (stage1CurrentIndex >= stage1Questions.length || lives <= 0) {
+            // Can kontrolü - can bitince oyun bitsin
+            if (lives <= 0) {
                 gameOver();
                 return;
+            }
+            
+            // Sorular bittiyse yeniden karıştır ve devam et
+            if (stage1CurrentIndex >= stage1Questions.length) {
+                stage1Questions.sort(() => Math.random() - 0.5);
+                stage1CurrentIndex = 0;
+                currentLevel++; // Seviye artır
+                updateDisplay();
+                playSound('levelup');
+                showFeedback(true, `🎉 Seviye ${currentLevel}!`);
             }
             
             questionsAnswered++;
             currentQuestion = stage1Questions[stage1CurrentIndex];
             stage1CurrentIndex++;
             
+            // Toplam süreyi güncelle
+            totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
+            
             // Soruyu göster
             document.getElementById('gameContent').innerHTML = `
                 <div class="question">${currentQuestion.description}</div>
                 <div class="hint">⌨️ Bu tuş hangisi? Doğru tuşa bas!</div>
+                <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
+                    ⏱️ Oyun Süresi: ${totalPlayTime} saniye
+                </div>
             `;
             
             startTimer(25);
