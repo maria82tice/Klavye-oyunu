@@ -139,11 +139,13 @@ Etaplar öğrenme piramidini takip eder:
 ## 📊 Kapsanan İçerik
 
 ### Özel Tuşlar (15 adet)
-- Esc, Tab, CapsLock, Shift, Control, Alt, AltGraph
+- Esc, Tab, CapsLock, Shift, Control, Alt, AltGr (boşluk sağındaki tuş)
 - Enter, Backspace, Delete, Boşluk
 - Ok tuşları: ↑ ↓ ← →
 
-**Not**: PrintScreen ve Insert tuşları tarayıcı tarafından engellendiği için oyuna dahil edilmemiştir.
+**Not**: 
+- PrintScreen ve Insert tuşları tarayıcı tarafından engellendiği için oyuna dahil edilmemiştir.
+- AltGr tuşu Windows'ta Ctrl+Alt kombinasyonu olarak algılanır ve oyunda doğru şekilde tanınır.
 
 ### Klavye Kısayolları (11 adet)
 - Ctrl + C, V, X (Kopyala, Yapıştır, Kes)
