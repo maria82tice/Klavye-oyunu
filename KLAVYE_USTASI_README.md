@@ -145,12 +145,13 @@ Etaplar öğrenme piramidini takip eder:
 
 **Not**: PrintScreen ve Insert tuşları tarayıcı tarafından engellendiği için oyuna dahil edilmemiştir.
 
-### Klavye Kısayolları (12 adet)
+### Klavye Kısayolları (11 adet)
 - Ctrl + C, V, X (Kopyala, Yapıştır, Kes)
 - Ctrl + S, P, A (Kaydet, Yazdır, Tümünü Seç)
 - Ctrl + F, Z (Bul, Geri Al)
 - Ctrl + B, U, I (Kalın, Altı Çizili, İtalik)
-- Alt + Tab (Pencere Geçişi)
+
+**Not**: Alt + Tab ve Alt + F4 kısayolları gerçek pencere işlemleri yaptığı için oyuna dahil edilmemiştir.
 
 ## 📈 İstatistikler ve Raporlama
 
