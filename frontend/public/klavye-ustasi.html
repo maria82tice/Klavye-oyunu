@@ -834,6 +834,8 @@
             maxCombo = 0;
             mistakes = {};
             activeKeys = [];
+            gameStartTime = Date.now();
+            totalPlayTime = 0;
             
             clearInterval(timerInterval);
             clearInterval(fallingKeysInterval);
