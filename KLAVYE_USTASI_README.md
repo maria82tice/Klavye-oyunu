@@ -51,13 +51,12 @@ MEB 5. Sınıf Bilişim Teknolojileri müfredatı:
 - **📊 Seviye Sistemi**: Kademeli zorluk artışı
 - **🔊 Ses Efektleri**: Doğru/yanlış/seviye atlama sesleri
 
-### Öğretmen Özellikleri
+### Ek Özellikler
 
-- **⚙️ Pratik Modu**: Süre sınırı kaldırılabilir
-- **📝 Tuş Adları**: Göster/gizle seçeneği
-- **🔊 Ses Kontrolü**: Açma/kapama
-- **📊 İstatistikler**: Öğrenci performans takibi
+- **🔊 Ses Kontrolü**: Ana menüden açma/kapama
+- **📊 İstatistikler**: Oyun sonu performans raporu
 - **⚠️ Hata Analizi**: En çok zorlanılan tuşları gösterir
+- **🏠 Ev Kullanımı**: Öğrenciler evde kendi başlarına çalışabilir
 
 ## 🚀 Nasıl Oynanır?
 
