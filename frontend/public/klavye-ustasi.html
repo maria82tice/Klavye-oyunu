@@ -1416,6 +1416,13 @@
             e.preventDefault();
             
             const normalizedKey = e.key.toLowerCase() === 'control' ? 'control' : e.key.toLowerCase();
+            
+            // Sadece modifier tuşlar (Control, Shift, Alt) tek başına basıldıysa bekle
+            if (normalizedKey === 'control' || normalizedKey === 'shift' || normalizedKey === 'alt') {
+                pressedKeys.add(normalizedKey);
+                return; // Henüz kontrol etme, ikinci tuşu bekle
+            }
+            
             pressedKeys.add(normalizedKey);
             
             // Tüm beklenen tuşlar basılı mı kontrol et
