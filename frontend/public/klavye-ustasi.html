@@ -1555,14 +1555,28 @@
         }
         
         function showStage5Question() {
-            if (stage5CurrentIndex >= stage5Questions.length || lives <= 0) {
+            // Can kontrolü
+            if (lives <= 0) {
                 gameOver();
                 return;
+            }
+            
+            // Sorular bittiyse yeniden karıştır
+            if (stage5CurrentIndex >= stage5Questions.length) {
+                stage5Questions.sort(() => Math.random() - 0.5);
+                stage5CurrentIndex = 0;
+                currentLevel++;
+                updateDisplay();
+                playSound('levelup');
+                showFeedback(true, `🎉 Seviye ${currentLevel}!`);
             }
             
             questionsAnswered++;
             currentQuestion = stage5Questions[stage5CurrentIndex];
             stage5CurrentIndex++;
+            
+            // Toplam süreyi güncelle
+            totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
             
             const hintLevel = Math.min(Math.floor(wrongAnswers / 3), 2);
             let hintText = '🧠 Hangi kısayoldu? Hatırlamaya çalış!';
@@ -1578,6 +1592,9 @@
                     <div style="font-size: 2rem; margin-bottom: 20px;">"${currentQuestion.description}"</div>
                 </div>
                 <div class="hint">${hintText}</div>
+                <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
+                    ⏱️ Oyun Süresi: ${totalPlayTime} saniye
+                </div>
             `;
             
             startTimer(25);
