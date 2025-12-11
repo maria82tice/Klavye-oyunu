@@ -1363,11 +1363,15 @@
         }
         
         function showStage1Question() {
+            // ÖNCE oyun durumu kontrolü - isGameOver true ise hiçbir şey yapma
+            if (isGameOver) {
+                return;
+            }
+            
             // Can kontrolü - 0 veya altındaysa oyun bitir ve yeni soru gösterme
             if (lives <= 0) {
-                // Sadece bir kere gameOver çağır
-                if (!stage1AnswerLocked) {
-                    stage1AnswerLocked = true;
+                if (!isGameOver) {
+                    isGameOver = true;
                     gameOver();
                 }
                 return;
