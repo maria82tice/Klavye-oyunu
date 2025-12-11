@@ -1319,10 +1319,13 @@
         }
         
         function showStage1Question() {
-            // Can kontrolü - 0 veya altındaysa oyun bitir
+            // Can kontrolü - 0 veya altındaysa oyun bitir ve yeni soru gösterme
             if (lives <= 0) {
-                stage1AnswerLocked = true;
-                gameOver();
+                // Sadece bir kere gameOver çağır
+                if (!stage1AnswerLocked) {
+                    stage1AnswerLocked = true;
+                    gameOver();
+                }
                 return;
             }
             
