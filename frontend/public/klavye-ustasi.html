@@ -1473,11 +1473,9 @@
                 
                 // Can kontrolü HEMEN yap (handleWrongAnswer sonrası)
                 if (lives <= 0) {
-                    // Oyun bitti - DERHAL gameOver çağır
+                    // Oyun bitti - DERHAL gameOver çağır (setTimeout YOK)
                     stage1AnswerLocked = true;
-                    setTimeout(() => {
-                        gameOver();
-                    }, 2000);
+                    gameOver();
                 } else {
                     // 2 saniye sonra yeni soruya geç
                     setTimeout(() => {
