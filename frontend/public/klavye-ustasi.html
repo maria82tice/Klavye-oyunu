@@ -1463,16 +1463,18 @@
                 
                 // Can kontrolü HEMEN yap (handleWrongAnswer sonrası)
                 if (lives <= 0) {
-                    // Oyun bitti - 2 saniye sonra game over
+                    // Oyun bitti - DERHAL gameOver çağır
+                    stage1AnswerLocked = true;
                     setTimeout(() => {
-                        stage1AnswerLocked = true;
                         gameOver();
                     }, 2000);
                 } else {
                     // 2 saniye sonra yeni soruya geç
                     setTimeout(() => {
-                        stage1AnswerLocked = false;
-                        showStage1Question();
+                        if (lives > 0) {  // Çift kontrol
+                            stage1AnswerLocked = false;
+                            showStage1Question();
+                        }
                     }, 2000);
                 }
             }
