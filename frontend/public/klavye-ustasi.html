@@ -1565,7 +1565,15 @@
                 document.removeEventListener('keyup', stage4ComboKeyUp);
                 clearInterval(timerInterval);
                 
-                handleCorrectAnswer(150); // Kısayollar daha çok puan
+                // Hız bonusu: Kalan süre × 20 puan
+                const speedBonus = timeRemaining * 20;
+                handleCorrectAnswer(100 + speedBonus);
+            } else if (pressedKeys.size >= expectedCombo.length) {
+                // Yanlış kombinasyon - hemen hata ver
+                document.removeEventListener('keydown', stage4ComboHandler);
+                document.removeEventListener('keyup', stage4ComboKeyUp);
+                clearInterval(timerInterval);
+                handleWrongAnswer(Array.from(pressedKeys).join('+'));
             }
         }
         
