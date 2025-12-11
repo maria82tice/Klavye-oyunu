@@ -1328,22 +1328,48 @@
             
             // Görsel klavyeyi oluştur
             let keyboardHTML = '<div class="visual-keyboard">';
-            keyboardLayout.forEach(row => {
+            
+            // Ana klavye
+            keyboardHTML += '<div class="keyboard-main">';
+            keyboardLayout.main.forEach(row => {
                 keyboardHTML += '<div class="keyboard-row">';
                 row.forEach(key => {
-                    const widthClass = key.width === 'wide' ? 'key-wide' : 
-                                     key.width === 'extra-wide' ? 'key-extra-wide' :
-                                     key.width === 'space' ? 'key-space' : '';
+                    const sizeClass = `key-${key.size}`;
+                    const secondaryLabel = key.secondary ? `<div class="key-secondary">${key.secondary}</div>` : '';
                     keyboardHTML += `
-                        <button class="key-button ${widthClass}" 
+                        <button class="key-button ${sizeClass}" 
                                 data-key="${key.id}" 
                                 onclick="checkStage1Key('${key.id}')">
-                            ${key.label}
+                            <div class="key-label">${key.label}</div>
+                            ${secondaryLabel}
                         </button>
                     `;
                 });
                 keyboardHTML += '</div>';
             });
+            keyboardHTML += '</div>';
+            
+            // Numpad
+            keyboardHTML += '<div class="keyboard-numpad">';
+            keyboardLayout.numpad.forEach(row => {
+                keyboardHTML += '<div class="keyboard-row">';
+                row.forEach(key => {
+                    const sizeClass = `key-${key.size}`;
+                    const numpadClass = key.isNumpad ? 'key-numpad' : '';
+                    const secondaryLabel = key.secondary ? `<div class="key-secondary">${key.secondary}</div>` : '';
+                    keyboardHTML += `
+                        <button class="key-button ${sizeClass} ${numpadClass}" 
+                                data-key="${key.id}" 
+                                onclick="checkStage1Key('${key.id}')">
+                            <div class="key-label">${key.label}</div>
+                            ${secondaryLabel}
+                        </button>
+                    `;
+                });
+                keyboardHTML += '</div>';
+            });
+            keyboardHTML += '</div>';
+            
             keyboardHTML += '</div>';
             
             // Soruyu göster
