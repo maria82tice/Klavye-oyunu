@@ -1243,51 +1243,7 @@
             }
         }
         
-        function stage1KeyHandler(e) {
-            e.preventDefault();
-            document.removeEventListener('keydown', stage1KeyHandler);
-            clearInterval(timerInterval);
-            
-            // ÖNEMLİ: AltGr kontrolü ÖNCE yapılmalı çünkü Ctrl+Alt kombinasyonu
-            const isAltGrPressed = (e.ctrlKey && e.altKey) || 
-                                   e.key === 'AltGraph' || 
-                                   e.code === 'AltRight';
-            
-            // ÖNCE AltGr mi diye kontrol et
-            if (currentQuestion.key === 'AltGraph' && isAltGrPressed) {
-                handleCorrectAnswer();
-                return;
-            }
-            
-            // Tek Control tuşu (AltGr değil)
-            const isOnlyControl = (e.key === 'Control' || e.ctrlKey) && !e.altKey;
-            
-            // Tek Alt tuşu (AltGr değil)
-            const isOnlyAlt = e.altKey && !e.ctrlKey;
-            
-            // Diğer tuşları kontrol et
-            const isCorrect = 
-                e.key === currentQuestion.key || 
-                (currentQuestion.key === ' ' && e.key === ' ') ||
-                (currentQuestion.key === 'Control' && isOnlyControl) ||
-                (currentQuestion.key === 'CapsLock' && e.code === 'CapsLock') ||
-                (currentQuestion.key === 'Alt' && isOnlyAlt);
-            
-            if (isCorrect) {
-                handleCorrectAnswer();
-            } else {
-                // Daha anlamlı hata mesajı
-                let pressedKeyName = e.key;
-                if (isAltGrPressed) {
-                    pressedKeyName = 'AltGraph (Ctrl+Alt)';
-                } else if (e.ctrlKey && !e.altKey) {
-                    pressedKeyName = 'Control';
-                } else if (e.altKey && !e.ctrlKey) {
-                    pressedKeyName = 'Alt';
-                }
-                handleWrongAnswer(pressedKeyName);
-            }
-        }
+        // Stage1KeyHandler artık kullanılmıyor - görsel klavye ile tıklama yapılıyor
         
         function nextQuestion() {
             if (currentStage === 1) {
