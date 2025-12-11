@@ -1698,8 +1698,11 @@
         function stage2ComboHandler(e) {
             e.preventDefault();
             
-            // Shift tek başına hata vermesin, kombinasyon bekleniyor
-            if (e.key === 'Shift') {
+            // Oyun bittiyse işlem yapma
+            if (isGameOver) return;
+            
+            // Shift, Alt, AltGr, Ctrl tek başına basıldığında sadece kaydet, hata verme
+            if (['Shift', 'Alt', 'Control', 'AltGraph'].includes(e.key)) {
                 pressedKeys.add(e.key);
                 return; // Henüz kontrol etme, ikinci tuşu bekle
             }
@@ -1712,13 +1715,13 @@
             // Shift basılı mı kontrol et (shiftKey veya Set'te 'Shift')
             const isShiftPressed = e.shiftKey || pressedKeys.has('Shift');
             
+            // Event listener'ları temizle
+            document.removeEventListener('keydown', stage2ComboHandler);
+            document.removeEventListener('keyup', stage2ComboKeyUp);
+            clearInterval(timerInterval);
+            
             if (isShiftPressed) {
-                document.removeEventListener('keydown', stage2ComboHandler);
-                document.removeEventListener('keyup', stage2ComboKeyUp);
-                clearInterval(timerInterval);
-                
                 // Doğru kombinasyon mu kontrol et
-                // Özel durum: Shift+sayı veya Shift+noktalama işaretleri
                 let isCorrect = false;
                 
                 // Direkt karakter kontrolü (tarayıcı otomatik büyük harf vb. yapıyor)
@@ -1736,7 +1739,14 @@
                 } else {
                     handleWrongAnswer(Array.from(pressedKeys).join('+'));
                 }
+            } else {
+                // Shift basılı değilken karakter tuşuna basıldı - YANLIŞ
+                // Büyük harf isteniyorsa ve küçük basıldıysa yanlış
+                handleWrongAnswer(e.key + ' (Shift gerekli!)');
             }
+            
+            // pressedKeys'i temizle
+            pressedKeys.clear();
         }
         
         function stage2ComboKeyUp(e) {
