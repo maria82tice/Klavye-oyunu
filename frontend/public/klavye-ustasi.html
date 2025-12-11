@@ -1387,6 +1387,13 @@
         }
         
         function checkStage1Key(clickedKey) {
+            // Eğer cevap kilitliyse (zaten cevaplandıysa) işlem yapma
+            if (stage1AnswerLocked) {
+                return;
+            }
+            
+            // Cevabı kilitle - tekrar tıklanamaz
+            stage1AnswerLocked = true;
             clearInterval(timerInterval);
             
             const keyButton = document.querySelector(`[data-key="${clickedKey}"]`);
@@ -1395,17 +1402,31 @@
                 // Doğru!
                 keyButton.classList.add('correct');
                 handleCorrectAnswer();
+                
+                // 1 saniye sonra yeni soruya geç
+                setTimeout(() => {
+                    stage1AnswerLocked = false;
+                    showStage1Question();
+                }, 1000);
             } else {
                 // Yanlış!
                 keyButton.classList.add('wrong');
+                
+                // 0.3 saniye sonra doğru tuşu göster
                 setTimeout(() => {
-                    // Doğru tuşu göster
                     const correctButton = document.querySelector(`[data-key="${stage1CorrectKey}"]`);
                     if (correctButton) {
                         correctButton.classList.add('correct');
                     }
                 }, 300);
+                
                 handleWrongAnswer(clickedKey);
+                
+                // 2 saniye sonra yeni soruya geç (doğru tuşu görme fırsatı için daha uzun)
+                setTimeout(() => {
+                    stage1AnswerLocked = false;
+                    showStage1Question();
+                }, 2000);
             }
         }
         
