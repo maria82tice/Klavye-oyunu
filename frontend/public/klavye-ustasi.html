@@ -1622,14 +1622,10 @@
                 return;
             }
             
-            // Sorular bittiyse yeniden karıştır
+            // TÜM SORULAR BİTTİ - Oyun kazanıldı!
             if (stage5CurrentIndex >= stage5Questions.length) {
-                stage5Questions.sort(() => Math.random() - 0.5);
-                stage5CurrentIndex = 0;
-                currentLevel++;
-                updateDisplay();
-                playSound('levelup');
-                showFeedback(true, `🎉 Seviye ${currentLevel}!`);
+                gameOver();
+                return;
             }
             
             questionsAnswered++;
@@ -1649,16 +1645,18 @@
             }
             
             document.getElementById('gameContent').innerHTML = `
+                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <div style="font-size: 1rem; color: #64748b;">
+                        Soru ${questionsAnswered} / ${shortcuts.length}
+                    </div>
+                </div>
                 <div class="question">
                     <div style="font-size: 2rem; margin-bottom: 20px;">"${currentQuestion.description}"</div>
                 </div>
                 <div class="hint">${hintText}</div>
-                <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
-                    ⏱️ Oyun Süresi: ${totalPlayTime} saniye
-                </div>
             `;
             
-            startTimer(25);
+            startTimer(35);
             
             pressedKeys.clear();
             expectedCombo = currentQuestion.keys.map(k => k.toLowerCase());
