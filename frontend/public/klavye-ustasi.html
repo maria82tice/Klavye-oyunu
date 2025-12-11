@@ -1148,43 +1148,130 @@
         let stage1CurrentIndex = 0;
         let stage1CorrectKey = null;
         
-        // Klavye düzeni - Q Türkçe
-        const keyboardLayout = [
-            [
-                { id: 'Escape', label: 'Esc', width: 'normal' },
-                { id: 'F1', label: 'F1', width: 'normal' },
-                { id: 'F2', label: 'F2', width: 'normal' },
-                { id: 'F3', label: 'F3', width: 'normal' },
-                { id: 'F4', label: 'F4', width: 'normal' },
-                { id: 'F5', label: 'F5', width: 'normal' },
-                { id: 'F6', label: 'F6', width: 'normal' },
-                { id: 'Insert', label: 'Ins', width: 'normal' },
-                { id: 'Delete', label: 'Del', width: 'normal' },
-                { id: 'Home', label: 'Home', width: 'normal' },
-                { id: 'End', label: 'End', width: 'normal' },
-                { id: 'PageUp', label: 'PgUp', width: 'normal' },
-                { id: 'PageDown', label: 'PgDn', width: 'normal' }
+        // Gerçek Q Türkçe klavye düzeni
+        const keyboardLayout = {
+            main: [
+                // Üst sıra - F tuşları ve özel tuşlar
+                [
+                    { id: 'Escape', label: 'Esc', size: '1u' },
+                    { id: 'F1', label: 'F1', size: '1u' },
+                    { id: 'F2', label: 'F2', size: '1u' },
+                    { id: 'F3', label: 'F3', size: '1u' },
+                    { id: 'F4', label: 'F4', size: '1u' },
+                    { id: 'F5', label: 'F5', size: '1u' },
+                    { id: 'F6', label: 'F6', size: '1u' },
+                    { id: 'Insert', label: 'Ins', size: '1u' },
+                    { id: 'Delete', label: 'Del', size: '1u' },
+                    { id: 'Home', label: 'Home', size: '1u' },
+                    { id: 'End', label: 'End', size: '1u' },
+                    { id: 'PageUp', label: 'PgUp', size: '1u' },
+                    { id: 'PageDown', label: 'PgDn', size: '1u' }
+                ],
+                // Sayı sırası
+                [
+                    { id: 'Digit1', label: '1', secondary: '!', size: '1u' },
+                    { id: 'Digit2', label: '2', secondary: '\'', size: '1u' },
+                    { id: 'Digit3', label: '3', secondary: '^', size: '1u' },
+                    { id: 'Digit4', label: '4', secondary: '+', size: '1u' },
+                    { id: 'Digit5', label: '5', secondary: '%', size: '1u' },
+                    { id: 'Digit6', label: '6', secondary: '&', size: '1u' },
+                    { id: 'Digit7', label: '7', secondary: '/', size: '1u' },
+                    { id: 'Digit8', label: '8', secondary: '(', size: '1u' },
+                    { id: 'Digit9', label: '9', secondary: ')', size: '1u' },
+                    { id: 'Digit0', label: '0', secondary: '=', size: '1u' },
+                    { id: 'Minus', label: '*', secondary: '?', size: '1u' },
+                    { id: 'Equal', label: '-', secondary: '_', size: '1u' },
+                    { id: 'Backspace', label: '⌫', secondary: 'Backspace', size: '2u' }
+                ],
+                // QWERTY sırası
+                [
+                    { id: 'Tab', label: 'Tab', secondary: '⇥', size: '1-5u' },
+                    { id: 'KeyQ', label: 'Q', size: '1u' },
+                    { id: 'KeyW', label: 'W', size: '1u' },
+                    { id: 'KeyE', label: 'E', size: '1u' },
+                    { id: 'KeyR', label: 'R', size: '1u' },
+                    { id: 'KeyT', label: 'T', size: '1u' },
+                    { id: 'KeyY', label: 'Y', size: '1u' },
+                    { id: 'KeyU', label: 'U', size: '1u' },
+                    { id: 'KeyI', label: 'I', size: '1u' },
+                    { id: 'KeyO', label: 'O', size: '1u' },
+                    { id: 'KeyP', label: 'P', size: '1u' },
+                    { id: 'BracketLeft', label: 'Ğ', size: '1u' },
+                    { id: 'BracketRight', label: 'Ü', size: '1u' },
+                    { id: 'Enter', label: 'Enter', secondary: '⏎', size: '1-5u' }
+                ],
+                // ASDF sırası
+                [
+                    { id: 'CapsLock', label: 'Caps', secondary: 'Lock', size: '1-75u' },
+                    { id: 'KeyA', label: 'A', size: '1u' },
+                    { id: 'KeyS', label: 'S', size: '1u' },
+                    { id: 'KeyD', label: 'D', size: '1u' },
+                    { id: 'KeyF', label: 'F', size: '1u' },
+                    { id: 'KeyG', label: 'G', size: '1u' },
+                    { id: 'KeyH', label: 'H', size: '1u' },
+                    { id: 'KeyJ', label: 'J', size: '1u' },
+                    { id: 'KeyK', label: 'K', size: '1u' },
+                    { id: 'KeyL', label: 'L', size: '1u' },
+                    { id: 'Semicolon', label: 'Ş', size: '1u' },
+                    { id: 'Quote', label: 'İ', size: '1u' },
+                    { id: 'Backslash', label: ',', secondary: ';', size: '1u' }
+                ],
+                // ZXCV sırası
+                [
+                    { id: 'Shift', label: 'Shift', secondary: '⇧', size: '2-25u' },
+                    { id: 'KeyZ', label: 'Z', size: '1u' },
+                    { id: 'KeyX', label: 'X', size: '1u' },
+                    { id: 'KeyC', label: 'C', size: '1u' },
+                    { id: 'KeyV', label: 'V', size: '1u' },
+                    { id: 'KeyB', label: 'B', size: '1u' },
+                    { id: 'KeyN', label: 'N', size: '1u' },
+                    { id: 'KeyM', label: 'M', size: '1u' },
+                    { id: 'Comma', label: 'Ö', size: '1u' },
+                    { id: 'Period', label: 'Ç', size: '1u' },
+                    { id: 'Slash', label: '.', secondary: ':', size: '1u' },
+                    { id: 'ArrowUp', label: '↑', size: '1u' }
+                ],
+                // Alt sıra
+                [
+                    { id: 'Control', label: 'Ctrl', size: '1-5u' },
+                    { id: 'Alt', label: 'Alt', size: '1-5u' },
+                    { id: 'Space', label: 'Space', size: '6-25u' },
+                    { id: 'AltGraph', label: 'AltGr', size: '1-5u' },
+                    { id: 'ArrowLeft', label: '←', size: '1u' },
+                    { id: 'ArrowDown', label: '↓', size: '1u' },
+                    { id: 'ArrowRight', label: '→', size: '1u' }
+                ]
             ],
-            [
-                { id: 'Backspace', label: '⌫ Backspace', width: 'extra-wide' },
-                { id: 'Tab', label: 'Tab ⇥', width: 'wide' },
-                { id: 'CapsLock', label: 'Caps Lock', width: 'wide' }
-            ],
-            [
-                { id: 'Shift', label: 'Shift ⇧', width: 'extra-wide' },
-                { id: 'Control', label: 'Ctrl', width: 'wide' },
-                { id: 'Alt', label: 'Alt', width: 'wide' },
-                { id: 'Space', label: 'Space (Boşluk)', width: 'space' },
-                { id: 'AltGraph', label: 'AltGr', width: 'wide' },
-                { id: 'Enter', label: 'Enter ⏎', width: 'extra-wide' }
-            ],
-            [
-                { id: 'ArrowUp', label: '↑', width: 'normal' },
-                { id: 'ArrowDown', label: '↓', width: 'normal' },
-                { id: 'ArrowLeft', label: '←', width: 'normal' },
-                { id: 'ArrowRight', label: '→', width: 'normal' }
+            numpad: [
+                [
+                    { id: 'NumLock', label: 'Num', secondary: 'Lock', size: '1u', isNumpad: true },
+                    { id: 'NumpadDivide', label: '/', size: '1u', isNumpad: true },
+                    { id: 'NumpadMultiply', label: '*', size: '1u', isNumpad: true },
+                    { id: 'NumpadSubtract', label: '-', size: '1u', isNumpad: true }
+                ],
+                [
+                    { id: 'Numpad7', label: '7', size: '1u', isNumpad: true },
+                    { id: 'Numpad8', label: '8', size: '1u', isNumpad: true },
+                    { id: 'Numpad9', label: '9', size: '1u', isNumpad: true },
+                    { id: 'NumpadAdd', label: '+', size: '1u', isNumpad: true }
+                ],
+                [
+                    { id: 'Numpad4', label: '4', size: '1u', isNumpad: true },
+                    { id: 'Numpad5', label: '5', size: '1u', isNumpad: true },
+                    { id: 'Numpad6', label: '6', size: '1u', isNumpad: true }
+                ],
+                [
+                    { id: 'Numpad1', label: '1', size: '1u', isNumpad: true },
+                    { id: 'Numpad2', label: '2', size: '1u', isNumpad: true },
+                    { id: 'Numpad3', label: '3', size: '1u', isNumpad: true },
+                    { id: 'NumpadEnter', label: 'Enter', size: '1u', isNumpad: true }
+                ],
+                [
+                    { id: 'Numpad0', label: '0', size: '2u', isNumpad: true },
+                    { id: 'NumpadDecimal', label: '.', size: '1u', isNumpad: true }
+                ]
             ]
-        ];
+        };
         
         function startStage1() {
             // Soruları hazırla ve karıştır
