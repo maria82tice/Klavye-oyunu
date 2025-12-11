@@ -1584,9 +1584,15 @@
         }
         
         function showStage2Question() {
+            // Oyun durumu kontrolü
+            if (isGameOver) return;
+            
             // Can kontrolü
             if (lives <= 0) {
-                gameOver();
+                if (!isGameOver) {
+                    isGameOver = true;
+                    gameOver();
+                }
                 return;
             }
             
@@ -1645,9 +1651,11 @@
             document.removeEventListener('keydown', stage2ComboHandler);
             document.removeEventListener('keyup', stage2ComboKeyUp);
             
+            // pressedKeys'i temizle
+            pressedKeys.clear();
+            
             if (currentQuestion.keys.length > 1) {
                 // Shift kombinasyonu gerekiyor
-                pressedKeys.clear();
                 waitingForCombo = true;
                 document.addEventListener('keydown', stage2ComboHandler);
                 document.addEventListener('keyup', stage2ComboKeyUp);
