@@ -1454,19 +1454,23 @@
                     }
                 }, 300);
                 
+                // ÖNCE can azalt
                 handleWrongAnswer(clickedKey);
                 
-                // 2 saniye sonra can kontrolü yap ve yeni soruya geç veya oyunu bitir
-                setTimeout(() => {
-                    // Can kontrolü - 0 veya altındaysa oyun bitir
-                    if (lives <= 0) {
+                // Can kontrolü HEMEN yap (handleWrongAnswer sonrası)
+                if (lives <= 0) {
+                    // Oyun bitti - 2 saniye sonra game over
+                    setTimeout(() => {
                         stage1AnswerLocked = true;
                         gameOver();
-                    } else {
+                    }, 2000);
+                } else {
+                    // 2 saniye sonra yeni soruya geç
+                    setTimeout(() => {
                         stage1AnswerLocked = false;
                         showStage1Question();
-                    }
-                }, 2000);
+                    }, 2000);
+                }
             }
         }
         
