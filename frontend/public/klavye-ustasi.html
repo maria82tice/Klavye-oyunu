@@ -1692,7 +1692,15 @@
                 document.removeEventListener('keyup', stage5ComboKeyUp);
                 clearInterval(timerInterval);
                 
-                handleCorrectAnswer(200); // En zor etap, en çok puan
+                // Hız bonusu: Kalan süre × 25 puan (en zor etap)
+                const speedBonus = timeRemaining * 25;
+                handleCorrectAnswer(150 + speedBonus);
+            } else if (pressedKeys.size >= expectedCombo.length) {
+                // Yanlış kombinasyon - hemen hata ver
+                document.removeEventListener('keydown', stage5ComboHandler);
+                document.removeEventListener('keyup', stage5ComboKeyUp);
+                clearInterval(timerInterval);
+                handleWrongAnswer(Array.from(pressedKeys).join('+'));
             }
         }
         
