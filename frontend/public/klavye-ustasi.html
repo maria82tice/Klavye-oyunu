@@ -1160,17 +1160,20 @@
         }
         
         function showStage1Question() {
-            // Can kontrolü - can bitince oyun bitsin
+            // Can kontrolü
             if (lives <= 0) {
                 gameOver();
                 return;
             }
             
-            // Sorular bittiyse yeniden karıştır ve devam et
+            // Sorular bittiyse yeniden karıştır
             if (stage1CurrentIndex >= stage1Questions.length) {
-                stage1Questions.sort(() => Math.random() - 0.5);
+                for (let i = stage1Questions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [stage1Questions[i], stage1Questions[j]] = [stage1Questions[j], stage1Questions[i]];
+                }
                 stage1CurrentIndex = 0;
-                currentLevel++; // Seviye artır
+                currentLevel++;
                 updateDisplay();
                 playSound('levelup');
                 showFeedback(true, `🎉 Seviye ${currentLevel}!`);
@@ -1178,25 +1181,66 @@
             
             questionsAnswered++;
             currentQuestion = stage1Questions[stage1CurrentIndex];
+            stage1CorrectKey = currentQuestion.key;
             stage1CurrentIndex++;
             
             // Toplam süreyi güncelle
             totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
             
+            // Görsel klavyeyi oluştur
+            let keyboardHTML = '<div class="visual-keyboard">';
+            keyboardLayout.forEach(row => {
+                keyboardHTML += '<div class="keyboard-row">';
+                row.forEach(key => {
+                    const widthClass = key.width === 'wide' ? 'key-wide' : 
+                                     key.width === 'extra-wide' ? 'key-extra-wide' :
+                                     key.width === 'space' ? 'key-space' : '';
+                    keyboardHTML += `
+                        <button class="key-button ${widthClass}" 
+                                data-key="${key.id}" 
+                                onclick="checkStage1Key('${key.id}')">
+                            ${key.label}
+                        </button>
+                    `;
+                });
+                keyboardHTML += '</div>';
+            });
+            keyboardHTML += '</div>';
+            
             // Soruyu göster
             document.getElementById('gameContent').innerHTML = `
                 <div class="question">${currentQuestion.description}</div>
-                <div class="hint">⌨️ Bu tuş hangisi? Doğru tuşa bas!</div>
+                <div class="hint">👆 Klavye üzerinde doğru tuşa tıkla veya dokun!</div>
+                ${keyboardHTML}
                 <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
                     ⏱️ Oyun Süresi: ${totalPlayTime} saniye
                 </div>
             `;
             
-            startTimer(25);
+            startTimer(30);
+        }
+        
+        function checkStage1Key(clickedKey) {
+            clearInterval(timerInterval);
             
-            // Önceki event listener'ı temizle ve yenisini ekle
-            document.removeEventListener('keydown', stage1KeyHandler);
-            document.addEventListener('keydown', stage1KeyHandler);
+            const keyButton = document.querySelector(`[data-key="${clickedKey}"]`);
+            
+            if (clickedKey === stage1CorrectKey) {
+                // Doğru!
+                keyButton.classList.add('correct');
+                handleCorrectAnswer();
+            } else {
+                // Yanlış!
+                keyButton.classList.add('wrong');
+                setTimeout(() => {
+                    // Doğru tuşu göster
+                    const correctButton = document.querySelector(`[data-key="${stage1CorrectKey}"]`);
+                    if (correctButton) {
+                        correctButton.classList.add('correct');
+                    }
+                }, 300);
+                handleWrongAnswer(clickedKey);
+            }
         }
         
         function stage1KeyHandler(e) {
