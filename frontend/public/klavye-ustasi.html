@@ -1425,18 +1425,16 @@
                 keyButton.classList.add('correct');
                 handleCorrectAnswer();
                 
-                // Can kontrolü - 0 veya altındaysa oyun bitir
-                if (lives <= 0) {
-                    setTimeout(() => {
-                        gameOver();
-                    }, 1000);
-                    return;
-                }
-                
-                // 1 saniye sonra yeni soruya geç
+                // 1 saniye sonra can kontrolü yap ve yeni soruya geç veya oyunu bitir
                 setTimeout(() => {
-                    stage1AnswerLocked = false;
-                    showStage1Question();
+                    // Can kontrolü - 0 veya altındaysa oyun bitir
+                    if (lives <= 0) {
+                        stage1AnswerLocked = true;
+                        gameOver();
+                    } else {
+                        stage1AnswerLocked = false;
+                        showStage1Question();
+                    }
                 }, 1000);
             } else {
                 // Yanlış!
