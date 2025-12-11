@@ -1472,7 +1472,27 @@
             stage4Questions.sort(() => Math.random() - 0.5);
             stage4CurrentIndex = 0;
             
-            showStage4Question();
+            // Başlangıç açıklaması göster
+            document.getElementById('gameContent').innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <h2 style="color: #2563eb; font-size: 2rem; margin-bottom: 20px;">
+                        🎯 Etap 4: Kısayol Göster
+                    </h2>
+                    <div style="background: #dbeafe; padding: 25px; border-radius: 12px; margin: 20px 0;">
+                        <p style="font-size: 1.2rem; color: #1e40af; margin-bottom: 15px;">
+                            <strong>Nasıl Oynanır?</strong>
+                        </p>
+                        <p style="font-size: 1rem; color: #475569; line-height: 1.6;">
+                            Ekranda gösterilen klavye kısayolunu yap!<br>
+                            <strong style="color: #2563eb;">Ne kadar hızlı olursan o kadar çok puan!</strong><br>
+                            ${shortcuts.length} kısayol var, hepsini tamamla!
+                        </p>
+                    </div>
+                    <button onclick="showStage4Question()" style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);">
+                        🚀 Başla!
+                    </button>
+                </div>
+            `;
         }
         
         function showStage4Question() {
