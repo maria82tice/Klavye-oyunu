@@ -1313,8 +1313,9 @@
         }
         
         function showStage1Question() {
-            // Can kontrolü
+            // Can kontrolü - 0 veya altındaysa oyun bitir
             if (lives <= 0) {
+                stage1AnswerLocked = true;
                 gameOver();
                 return;
             }
