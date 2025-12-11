@@ -1465,6 +1465,7 @@
             if (lives <= 0) {
                 if (!isGameOver) {
                     isGameOver = true;
+                    clearInterval(timerInterval);
                     gameOver();
                 }
                 return;
@@ -1511,10 +1512,13 @@
                 }, 300);
                 
                 // ÖNCE can azalt - handleWrongAnswer içinde isGameOver kontrolü yapılıyor
+                // handleWrongAnswer lives<=0 ise HEMEN gameOver çağırır ve isGameOver=true yapar
                 handleWrongAnswer(clickedKey);
                 
                 // Oyun bittiyse (handleWrongAnswer içinde ayarlandı) yeni soru gösterme
-                if (isGameOver) return;
+                if (isGameOver) {
+                    return; // handleWrongAnswer zaten gameOver çağırdı
+                }
                 
                 // 2 saniye sonra yeni soruya geç
                 setTimeout(() => {
