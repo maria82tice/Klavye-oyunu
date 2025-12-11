@@ -1130,6 +1130,9 @@
             document.removeEventListener('keydown', stage5ComboHandler);
             document.removeEventListener('keyup', stage5ComboKeyUp);
             
+            // Etap 1 kilidini kaldır
+            stage1AnswerLocked = false;
+            
             playSound('gameover');
             
             // İstatistikleri hazırla
