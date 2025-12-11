@@ -1431,17 +1431,20 @@
                 keyButton.classList.add('correct');
                 handleCorrectAnswer();
                 
-                // 1 saniye sonra can kontrolü yap ve yeni soruya geç veya oyunu bitir
-                setTimeout(() => {
-                    // Can kontrolü - 0 veya altındaysa oyun bitir
-                    if (lives <= 0) {
+                // Can kontrolü HEMEN yap (handleCorrectAnswer sonrası - teoride değişmez ama yine de kontrol)
+                if (lives <= 0) {
+                    // Oyun bitti - 1 saniye sonra game over
+                    setTimeout(() => {
                         stage1AnswerLocked = true;
                         gameOver();
-                    } else {
+                    }, 1000);
+                } else {
+                    // 1 saniye sonra yeni soruya geç
+                    setTimeout(() => {
                         stage1AnswerLocked = false;
                         showStage1Question();
-                    }
-                }, 1000);
+                    }, 1000);
+                }
             } else {
                 // Yanlış!
                 keyButton.classList.add('wrong');
