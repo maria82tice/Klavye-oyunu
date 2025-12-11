@@ -1203,13 +1203,31 @@
             // Toplam süreyi güncelle
             totalPlayTime = Math.floor((Date.now() - gameStartTime) / 1000);
             
-            const hintText = currentQuestion.keys.length > 1 
-                ? '💡 İpucu: Bu büyük harf veya özel karakter için Shift tuşunu kullanman gerekebilir!'
-                : '⌨️ Ekrandaki tuşa bas!';
+            // Shift/AltGr hatırlatması
+            let hintText = '⌨️ Ekrandaki tuşa bas!';
+            let reminderBox = '';
+            
+            if (currentQuestion.keys.length > 1) {
+                hintText = '💡 İpucu: Bu büyük harf veya özel karakter için Shift tuşunu kullanman gerekebilir!';
+                reminderBox = `
+                    <div style="background: #fef3c7; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #f59e0b;">
+                        <strong style="color: #92400e;">📌 Hatırlatma:</strong>
+                        <span style="color: #78350f;"> Shift tuşuna basılı tutarken harfe bas!</span>
+                    </div>
+                `;
+            } else if ([';', ')', '(', ':', '?', '!', '"', '_', '%', '&', '@', '€', '₺'].includes(currentQuestion.display)) {
+                reminderBox = `
+                    <div style="background: #dbeafe; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #2563eb;">
+                        <strong style="color: #1e40af;">📌 Hatırlatma:</strong>
+                        <span style="color: #1e3a8a;"> Özel karakterler için Shift veya AltGr tuşu gerekebilir!</span>
+                    </div>
+                `;
+            }
             
             document.getElementById('gameContent').innerHTML = `
                 <div class="key-display">${currentQuestion.display}</div>
                 <div class="hint">${hintText}</div>
+                ${reminderBox}
                 <div style="margin-top: 20px; font-size: 1.1rem; color: #2563eb;">
                     ⏱️ Oyun Süresi: ${totalPlayTime} saniye
                 </div>
