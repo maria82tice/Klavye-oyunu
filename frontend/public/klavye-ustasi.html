@@ -1408,15 +1408,13 @@
         }
         
         function checkStage1Key(clickedKey) {
-            // Eğer cevap kilitliyse (zaten cevaplandıysa) işlem yapma
-            if (stage1AnswerLocked) {
+            // ÖNCELİKLE can kontrolü - 0 veya altındaysa hiçbir şey yapma
+            if (lives <= 0) {
                 return;
             }
             
-            // Can kontrolü - 0 veya altındaysa oyun bitmeli
-            if (lives <= 0) {
-                stage1AnswerLocked = true;
-                gameOver();
+            // Eğer cevap kilitliyse (zaten cevaplandıysa) işlem yapma
+            if (stage1AnswerLocked) {
                 return;
             }
             
