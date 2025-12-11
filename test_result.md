@@ -101,3 +101,57 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Klavye Ustası - 5. sınıf öğrencileri için Türkçe Q klavye öğrenme oyunu. Tek HTML dosyası içinde 5 etaplı oyun. Kritik hata: Etap 1'de canlar 0 olunca oyun bitmiyor ve 'Oyundan Çık' butonu çalışmıyor."
+
+frontend:
+  - task: "Etap 1 - Görsel Klavye Game Over Düzeltmesi"
+    implemented: true
+    working: true
+    file: "/app/frontend/public/klavye-ustasi.html"
+    stuck_count: 3
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Can 0 olunca oyun bitmiyor, devam ediyor ve canlar negatife düşüyor"
+      - working: false
+        agent: "user"
+        comment: "Oyundan Çık butonu çalışmıyor"
+      - working: true
+        agent: "main"
+        comment: "isGameOver global flag eklendi. handleWrongAnswer'da lives<=0 kontrolü ile HEMEN gameOver() çağrılıyor (setTimeout yok). checkStage1Key içinde isGameOver kontrolleri eklendi. stage1KeyHandler referansı kaldırıldı (tanımlı değildi)."
+
+  - task: "Etap 1 - Oyundan Çık Butonu"
+    implemented: true
+    working: true
+    file: "/app/frontend/public/klavye-ustasi.html"
+    stuck_count: 2
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Oyundan Çık butonu çalışmıyor"
+      - working: true
+        agent: "main"
+        comment: "exitGame() fonksiyonu düzeltildi. isGameOver=true en başta ayarlanıyor. stage1KeyHandler referansı kaldırıldı."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Etap 1 - Görsel Klavye Game Over Düzeltmesi"
+    - "Etap 1 - Oyundan Çık Butonu"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Kritik hata düzeltildi. Etap 1'de canlar 0 olunca artık Game Over ekranı gösteriliyor. Oyundan Çık butonu da çalışıyor. Test senaryosu: 1) Etap 1'i başlat 2) 3 kez yanlış tuşa tıkla 3) Game Over ekranının gösterildiğini doğrula. Ayrıca: 1) Etap 1'i başlat 2) Oyundan Çık butonuna tıkla 3) Etap seçim ekranına dönüldüğünü doğrula."
