@@ -1281,20 +1281,32 @@
             
             pressedKeys.add(e.key);
             
-            // Shift + harf kontrolü
+            // Shift + karakter kontrolü
             const expectedChar = currentQuestion.keys[1];
             
-            // Shift basılı mı ve doğru harf mi kontrol et
-            if (pressedKeys.has('Shift') && pressedKeys.size >= 2) {
+            // Shift basılı mı kontrol et (shiftKey veya Set'te 'Shift')
+            const isShiftPressed = e.shiftKey || pressedKeys.has('Shift');
+            
+            if (isShiftPressed) {
                 document.removeEventListener('keydown', stage2ComboHandler);
                 document.removeEventListener('keyup', stage2ComboKeyUp);
                 clearInterval(timerInterval);
                 
-                // Doğru kombinasyon mu? (büyük/küçük harf duyarlı olmadan)
-                const pressedChar = e.key.toLowerCase();
-                const expectedLower = expectedChar.toLowerCase();
+                // Doğru kombinasyon mu kontrol et
+                // Özel durum: Shift+sayı veya Shift+noktalama işaretleri
+                let isCorrect = false;
                 
-                if (pressedChar === expectedLower) {
+                // Direkt karakter kontrolü (tarayıcı otomatik büyük harf vb. yapıyor)
+                if (e.key === currentQuestion.display) {
+                    isCorrect = true;
+                } else {
+                    // Manuel kontrol (küçük harfle karşılaştır)
+                    const pressedChar = e.key.toLowerCase();
+                    const expectedLower = expectedChar.toLowerCase();
+                    isCorrect = (pressedChar === expectedLower);
+                }
+                
+                if (isCorrect) {
                     handleCorrectAnswer();
                 } else {
                     handleWrongAnswer(Array.from(pressedKeys).join('+'));
