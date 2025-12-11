@@ -1154,15 +1154,23 @@
         let stage2CurrentIndex = 0;
         
         function startStage2() {
-            // Karakterleri zorluğa göre sırala
-            const easyChars = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 15);
+            // Karakterleri zorluğa göre sırala - ama Shift/AltGr karakterler ERKEN gelsin
+            const easyChars = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 10);
             const mediumChars = characters.filter(c => /[çğıöşü]/i.test(c));
-            const hardChars = shiftCharacters.slice(0, 5);
+            const specialChars = [';', ')', '(', ':', '?', '!', '"', '_', '%', '&'];
+            
+            // ÖNEMLİ: Shift karakterleri ve özel karakterleri BAŞA ekle
+            const shiftCharsEarly = shiftCharacters.slice(0, 10);
             
             stage2Questions = [
+                // İLK OLARAK Shift ve özel karakterler (öğrenmek için zaman olsun)
+                ...shiftCharsEarly,
+                ...specialChars.map(c => ({ display: c, keys: [c], isShift: false })),
+                // Sonra kolay karakterler
                 ...easyChars.map(c => ({ display: c, keys: [c], isShift: false })),
                 ...mediumChars.map(c => ({ display: c, keys: [c], isShift: false })),
-                ...hardChars
+                // Kalan Shift karakterler
+                ...shiftCharacters.slice(10)
             ];
             
             stage2Questions.sort(() => Math.random() - 0.5);
