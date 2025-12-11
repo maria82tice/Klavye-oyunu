@@ -1048,8 +1048,7 @@
             clearInterval(timerInterval);
             clearInterval(fallingKeysInterval);
             
-            // Tüm event listener'ları temizle
-            document.removeEventListener('keydown', stage1KeyHandler);
+            // Tüm event listener'ları temizle (sadece tanımlı olanlar)
             document.removeEventListener('keydown', stage2KeyHandler);
             document.removeEventListener('keydown', stage2ComboHandler);
             document.removeEventListener('keyup', stage2ComboKeyUp);
