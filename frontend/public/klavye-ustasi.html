@@ -1109,6 +1109,9 @@
         }
         
         function handleWrongAnswer(mistakeKey = null) {
+            // Oyun zaten bittiyse hiçbir şey yapma
+            if (isGameOver) return;
+            
             wrongAnswers++;
             lives--;
             combo = 0; // Combo sıfırlanır
@@ -1120,19 +1123,24 @@
             updateDisplay();
             showFeedback(false);
             
-            // Etap 1 için nextQuestion veya gameOver çağırma (kendi setTimeout'u var)
+            // Can 0 veya altına düştüyse oyunu bitir
+            if (lives <= 0) {
+                isGameOver = true;
+                // Tüm etaplar için (Etap 1 dahil) oyun sonu
+                setTimeout(() => {
+                    gameOver();
+                }, 1000);
+                return;
+            }
+            
+            // Etap 1 için nextQuestion çağırma (kendi setTimeout'u var)
             if (currentStage !== 1) {
-                if (lives <= 0) {
-                    // Oyun bitti
-                    setTimeout(() => {
-                        gameOver();
-                    }, 1000);
-                } else {
-                    // Bir sonraki soruya geç
-                    setTimeout(() => {
+                // Bir sonraki soruya geç
+                setTimeout(() => {
+                    if (!isGameOver && lives > 0) {
                         nextQuestion();
-                    }, 1000);
-                }
+                    }
+                }, 1000);
             }
         }
         
