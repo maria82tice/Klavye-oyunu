@@ -1125,10 +1125,9 @@
             // Can 0 veya altına düştüyse oyunu bitir
             if (lives <= 0) {
                 isGameOver = true;
-                // Tüm etaplar için (Etap 1 dahil) oyun sonu
-                setTimeout(() => {
-                    gameOver();
-                }, 1000);
+                clearInterval(timerInterval);
+                // HEMEN game over - setTimeout YOK
+                gameOver();
                 return;
             }
             
