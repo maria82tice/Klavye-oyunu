@@ -1362,27 +1362,31 @@
                 { display: 'AltGr', key: 'AltGraph' }  // AltGr tuşu
             ];
             
-            // Rastgele karakter seç (seviyeye göre)
+            // Rastgele karakter seç (seviyeye göre) - ERKEN SEVİYELERDE ZOR KARAKTERLER EKLE
             let charData;
             if (currentLevel === 1) {
-                // Seviye 1: Sadece basit harfler ve sayılar
-                const pool = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 20);
-                const char = pool[Math.floor(Math.random() * pool.length)];
-                charData = { display: char, key: char };
-            } else if (currentLevel === 2) {
-                // Seviye 2: Türkçe karakterler ekleniyor
-                const pool = [...characters.slice(0, 30)];
-                const char = pool[Math.floor(Math.random() * pool.length)];
-                charData = { display: char, key: char };
-            } else if (currentLevel === 3) {
-                // Seviye 3: Shift karakterleri ekleniyor
-                const pool = [...characters, ...shiftCharacters.slice(0, 3).map(s => ({ display: s.display, key: s.keys[1] }))];
+                // Seviye 1: Basit harfler + Shift karakterleri (öğrensinler)
+                const easyChars = characters.filter(c => /[a-z0-9]/i.test(c)).slice(0, 15);
+                const earlyShiftChars = shiftCharacters.slice(0, 5).map(s => ({ display: s.display, key: s.keys[1] }));
+                const pool = [...easyChars.map(c => ({ display: c, key: c })), ...earlyShiftChars];
                 charData = pool[Math.floor(Math.random() * pool.length)];
-                if (typeof charData === 'string') {
-                    charData = { display: charData, key: charData };
-                }
+            } else if (currentLevel === 2) {
+                // Seviye 2: Türkçe karakterler + Daha fazla Shift karakterleri
+                const pool = [
+                    ...characters.slice(0, 30).map(c => ({ display: c, key: c })),
+                    ...shiftCharacters.slice(0, 8).map(s => ({ display: s.display, key: s.keys[1] }))
+                ];
+                charData = pool[Math.floor(Math.random() * pool.length)];
+            } else if (currentLevel === 3) {
+                // Seviye 3: Tüm karakterler + Özel tuşlar
+                const pool = [
+                    ...characters.map(c => ({ display: c, key: c })),
+                    ...shiftCharacters.map(s => ({ display: s.display, key: s.keys[1] })),
+                    ...specialKeyPool.slice(0, 5)
+                ];
+                charData = pool[Math.floor(Math.random() * pool.length)];
             } else {
-                // Seviye 4+: Özel tuşlar da ekleniyor
+                // Seviye 4+: Her şey dahil
                 const pool = [
                     ...characters.map(c => ({ display: c, key: c })),
                     ...shiftCharacters.map(s => ({ display: s.display, key: s.keys[1] })),
