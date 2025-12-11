@@ -1145,6 +1145,14 @@
         }
         
         function gameOver() {
+            // Zaten oyun bittiyse tekrar çağırma
+            if (isGameOver && document.getElementById('gameOverScreen').classList.contains('active')) {
+                return;
+            }
+            
+            // Oyun durumunu kesinlikle sonlandır
+            isGameOver = true;
+            
             // Tüm interval'leri temizle
             clearInterval(timerInterval);
             clearInterval(fallingKeysInterval);
