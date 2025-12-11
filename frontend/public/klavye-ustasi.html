@@ -1459,10 +1459,15 @@
         }
         
         function checkStage1Key(clickedKey) {
+            // ÖNCE oyun durumu kontrolü - isGameOver true ise hiçbir şey yapma
+            if (isGameOver) {
+                return;
+            }
+            
             // ÖNCELİKLE can kontrolü - 0 veya altındaysa gameOver göster
             if (lives <= 0) {
-                if (!stage1AnswerLocked) {
-                    stage1AnswerLocked = true;
+                if (!isGameOver) {
+                    isGameOver = true;
                     gameOver();
                 }
                 return;
@@ -1481,52 +1486,46 @@
             
             if (clickedKey === stage1CorrectKey) {
                 // Doğru!
-                keyButton.classList.add('correct');
+                if (keyButton) keyButton.classList.add('correct');
                 handleCorrectAnswer();
                 
-                // Can kontrolü HEMEN yap (handleCorrectAnswer sonrası - teoride değişmez ama yine de kontrol)
-                if (lives <= 0) {
-                    // Oyun bitti - 1 saniye sonra game over
-                    setTimeout(() => {
-                        stage1AnswerLocked = true;
-                        gameOver();
-                    }, 1000);
-                } else {
-                    // 1 saniye sonra yeni soruya geç
-                    setTimeout(() => {
+                // Oyun bittiyse yeni soru gösterme
+                if (isGameOver) return;
+                
+                // 1 saniye sonra yeni soruya geç
+                setTimeout(() => {
+                    if (!isGameOver && lives > 0) {
                         stage1AnswerLocked = false;
                         showStage1Question();
-                    }, 1000);
-                }
+                    }
+                }, 1000);
             } else {
                 // Yanlış!
-                keyButton.classList.add('wrong');
+                if (keyButton) keyButton.classList.add('wrong');
                 
                 // 0.3 saniye sonra doğru tuşu göster
                 setTimeout(() => {
-                    const correctButton = document.querySelector(`[data-key="${stage1CorrectKey}"]`);
-                    if (correctButton) {
-                        correctButton.classList.add('correct');
+                    if (!isGameOver) {
+                        const correctButton = document.querySelector(`[data-key="${stage1CorrectKey}"]`);
+                        if (correctButton) {
+                            correctButton.classList.add('correct');
+                        }
                     }
                 }, 300);
                 
-                // ÖNCE can azalt
+                // ÖNCE can azalt - handleWrongAnswer içinde isGameOver kontrolü yapılıyor
                 handleWrongAnswer(clickedKey);
                 
-                // Can kontrolü HEMEN yap (handleWrongAnswer sonrası)
-                if (lives <= 0) {
-                    // Oyun bitti - DERHAL gameOver çağır (setTimeout YOK)
-                    stage1AnswerLocked = true;
-                    gameOver();
-                } else {
-                    // 2 saniye sonra yeni soruya geç
-                    setTimeout(() => {
-                        if (lives > 0) {  // Çift kontrol
-                            stage1AnswerLocked = false;
-                            showStage1Question();
-                        }
-                    }, 2000);
-                }
+                // Oyun bittiyse (handleWrongAnswer içinde ayarlandı) yeni soru gösterme
+                if (isGameOver) return;
+                
+                // 2 saniye sonra yeni soruya geç
+                setTimeout(() => {
+                    if (!isGameOver && lives > 0) {
+                        stage1AnswerLocked = false;
+                        showStage1Question();
+                    }
+                }, 2000);
             }
         }
         
