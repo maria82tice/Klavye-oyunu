@@ -1097,19 +1097,58 @@
             startStage(currentStage);
         }
         
-        // ===== ETAP 1: TANIMA & GÖREV BUL =====
+        // ===== ETAP 1: GÖRSEL KLAVYEDE TIK TIKLA =====
         
         let stage1Questions = [];
         let stage1CurrentIndex = 0;
+        let stage1CorrectKey = null;
+        
+        // Klavye düzeni - Q Türkçe
+        const keyboardLayout = [
+            [
+                { id: 'Escape', label: 'Esc', width: 'normal' },
+                { id: 'F1', label: 'F1', width: 'normal' },
+                { id: 'F2', label: 'F2', width: 'normal' },
+                { id: 'F3', label: 'F3', width: 'normal' },
+                { id: 'F4', label: 'F4', width: 'normal' },
+                { id: 'F5', label: 'F5', width: 'normal' },
+                { id: 'F6', label: 'F6', width: 'normal' },
+                { id: 'Insert', label: 'Ins', width: 'normal' },
+                { id: 'Delete', label: 'Del', width: 'normal' },
+                { id: 'Home', label: 'Home', width: 'normal' },
+                { id: 'End', label: 'End', width: 'normal' },
+                { id: 'PageUp', label: 'PgUp', width: 'normal' },
+                { id: 'PageDown', label: 'PgDn', width: 'normal' }
+            ],
+            [
+                { id: 'Backspace', label: '⌫ Backspace', width: 'extra-wide' },
+                { id: 'Tab', label: 'Tab ⇥', width: 'wide' },
+                { id: 'CapsLock', label: 'Caps Lock', width: 'wide' }
+            ],
+            [
+                { id: 'Shift', label: 'Shift ⇧', width: 'extra-wide' },
+                { id: 'Control', label: 'Ctrl', width: 'wide' },
+                { id: 'Alt', label: 'Alt', width: 'wide' },
+                { id: 'Space', label: 'Space (Boşluk)', width: 'space' },
+                { id: 'AltGraph', label: 'AltGr', width: 'wide' },
+                { id: 'Enter', label: 'Enter ⏎', width: 'extra-wide' }
+            ],
+            [
+                { id: 'ArrowUp', label: '↑', width: 'normal' },
+                { id: 'ArrowDown', label: '↓', width: 'normal' },
+                { id: 'ArrowLeft', label: '←', width: 'normal' },
+                { id: 'ArrowRight', label: '→', width: 'normal' }
+            ]
+        ];
         
         function startStage1() {
-            // Soruları hazırla ve HEMEN karıştır (sıralı olmasın)
+            // Soruları hazırla ve karıştır
             stage1Questions = Object.entries(specialKeys).map(([key, description]) => ({
                 key: key,
                 description: description
             }));
             
-            // Rastgele karıştır - sıralı gitmesin
+            // Rastgele karıştır
             for (let i = stage1Questions.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [stage1Questions[i], stage1Questions[j]] = [stage1Questions[j], stage1Questions[i]];
