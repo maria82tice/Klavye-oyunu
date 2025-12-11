@@ -1095,16 +1095,19 @@
             updateDisplay();
             showFeedback(false);
             
-            if (lives <= 0) {
-                // Oyun bitti
-                setTimeout(() => {
-                    gameOver();
-                }, 1000);
-            } else {
-                // Bir sonraki soruya geç
-                setTimeout(() => {
-                    nextQuestion();
-                }, 1000);
+            // Etap 1 için nextQuestion veya gameOver çağırma (kendi setTimeout'u var)
+            if (currentStage !== 1) {
+                if (lives <= 0) {
+                    // Oyun bitti
+                    setTimeout(() => {
+                        gameOver();
+                    }, 1000);
+                } else {
+                    // Bir sonraki soruya geç
+                    setTimeout(() => {
+                        nextQuestion();
+                    }, 1000);
+                }
             }
         }
         
