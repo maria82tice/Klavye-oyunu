@@ -1025,14 +1025,18 @@
         let stage1CurrentIndex = 0;
         
         function startStage1() {
-            // Soruları hazırla
+            // Soruları hazırla ve HEMEN karıştır (sıralı olmasın)
             stage1Questions = Object.entries(specialKeys).map(([key, description]) => ({
                 key: key,
                 description: description
             }));
             
-            // Karıştır
-            stage1Questions.sort(() => Math.random() - 0.5);
+            // Rastgele karıştır - sıralı gitmesin
+            for (let i = stage1Questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [stage1Questions[i], stage1Questions[j]] = [stage1Questions[j], stage1Questions[i]];
+            }
+            
             stage1CurrentIndex = 0;
             
             showStage1Question();
