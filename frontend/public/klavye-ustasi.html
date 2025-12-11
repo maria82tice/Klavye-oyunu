@@ -1089,21 +1089,36 @@
             // AltGr için gerçek kontrol - Windows'ta Ctrl+Alt kombinasyonu!
             const isAltGrPressed = (e.ctrlKey && e.altKey) || 
                                    e.key === 'AltGraph' || 
-                                   e.code === 'AltRight' ||
-                                   (e.altKey && e.location === 2);
+                                   e.code === 'AltRight';
             
             // Tek Control tuşu (AltGr değil)
             const isOnlyControl = (e.key === 'Control' || e.ctrlKey) && !e.altKey;
             
-            if (e.key === currentQuestion.key || 
+            // Tek Alt tuşu (AltGr değil)
+            const isOnlyAlt = e.altKey && !e.ctrlKey;
+            
+            // Doğru tuş mı kontrol et
+            const isCorrect = 
+                e.key === currentQuestion.key || 
                 (currentQuestion.key === ' ' && e.key === ' ') ||
                 (currentQuestion.key === 'Control' && isOnlyControl) ||
                 (currentQuestion.key === 'CapsLock' && e.code === 'CapsLock') ||
-                (currentQuestion.key === 'Alt' && e.altKey && !e.ctrlKey) ||
-                (currentQuestion.key === 'AltGraph' && isAltGrPressed)) {
+                (currentQuestion.key === 'Alt' && isOnlyAlt) ||
+                (currentQuestion.key === 'AltGraph' && isAltGrPressed);
+            
+            if (isCorrect) {
                 handleCorrectAnswer();
             } else {
-                handleWrongAnswer(e.key);
+                // Daha anlamlı hata mesajı için
+                let pressedKeyName = e.key;
+                if (isAltGrPressed) {
+                    pressedKeyName = 'AltGraph';
+                } else if (e.ctrlKey && !e.altKey) {
+                    pressedKeyName = 'Control';
+                } else if (e.altKey && !e.ctrlKey) {
+                    pressedKeyName = 'Alt';
+                }
+                handleWrongAnswer(pressedKeyName);
             }
         }
         
