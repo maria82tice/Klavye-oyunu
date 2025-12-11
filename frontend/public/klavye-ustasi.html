@@ -441,76 +441,121 @@
 
         /* ===== GÖRSEL KLAVYE (ETAP 1) ===== */
         .visual-keyboard {
-            background: #f8fafc;
-            padding: 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 25px;
             border-radius: 15px;
-            max-width: 900px;
+            max-width: 1100px;
             margin: 20px auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: flex;
+            gap: 20px;
+        }
+
+        .keyboard-main {
+            flex: 1;
+        }
+
+        .keyboard-numpad {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .keyboard-row {
             display: flex;
-            gap: 5px;
-            margin-bottom: 5px;
-            justify-content: center;
+            gap: 6px;
+            margin-bottom: 6px;
         }
 
         .key-button {
-            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 10px;
-            min-width: 45px;
-            min-height: 45px;
-            font-size: 0.9rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #94a3b8;
+            border-bottom: 3px solid #64748b;
+            border-radius: 5px;
+            padding: 8px;
+            min-width: 50px;
+            height: 50px;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #1e293b;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
         }
 
         .key-button:hover {
             background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             border-color: #2563eb;
+            border-bottom-color: #1e40af;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
         }
 
         .key-button:active {
-            transform: translateY(0);
+            transform: translateY(1px);
+            border-bottom-width: 1px;
         }
 
         .key-button.correct {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            border-color: #10b981;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important;
+            border-color: #10b981 !important;
+            border-bottom-color: #059669 !important;
             animation: correctPulse 0.5s ease;
         }
 
         .key-button.wrong {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            border-color: #ef4444;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
+            border-color: #ef4444 !important;
+            border-bottom-color: #dc2626 !important;
             animation: shake 0.5s ease;
         }
 
         @keyframes correctPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.1) translateY(-3px); }
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
         }
 
-        .key-wide { min-width: 65px; }
-        .key-extra-wide { min-width: 95px; }
-        .key-space { min-width: 280px; }
+        /* Tuş boyutları */
+        .key-1u { min-width: 50px; }
+        .key-1-5u { min-width: 75px; }
+        .key-1-75u { min-width: 87px; }
+        .key-2u { min-width: 100px; }
+        .key-2-25u { min-width: 112px; }
+        .key-2-75u { min-width: 137px; }
+        .key-6-25u { min-width: 312px; }
+
+        /* Özel tuş stilleri */
+        .key-button .key-label {
+            font-size: 0.85rem;
+        }
+
+        .key-button .key-secondary {
+            font-size: 0.65rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* NumPad özel stil */
+        .key-numpad {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .key-numpad:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+        }
 
         /* ===== SEVİYE GÖSTERGESI ===== */
         .level-badge {
