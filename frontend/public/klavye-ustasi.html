@@ -1003,7 +1003,20 @@
                 
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    handleWrongAnswer();
+                    
+                    // Etap 1'de süre biterse ve kilit yoksa
+                    if (currentStage === 1 && !stage1AnswerLocked) {
+                        stage1AnswerLocked = true;
+                        handleWrongAnswer('Süre doldu');
+                        // 2 saniye sonra yeni soruya geç
+                        setTimeout(() => {
+                            stage1AnswerLocked = false;
+                            showStage1Question();
+                        }, 2000);
+                    } else if (currentStage !== 1) {
+                        // Diğer etaplar için normal akış
+                        handleWrongAnswer();
+                    }
                 }
             }, 1000);
         }
