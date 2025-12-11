@@ -758,9 +758,15 @@
         
         // ===== KLAVYE VERİ BANKASI =====
         
-        // Özel tuşlar ve görevleri - artık tıklama tabanlı olduğu için tüm tuşlar eklenebilir
+        // Özel tuşlar ve görevleri - tam klavye
         const specialKeys = {
             'Escape': 'İptal tuşu, çıkış yapar, bazı programlarda menüden çıkılır',
+            'F1': 'Yardım menüsünü açar',
+            'F2': 'Dosya veya klasörü yeniden adlandırır',
+            'F3': 'Arama yapar',
+            'F4': 'Adres çubuğunu açar',
+            'F5': 'Sayfayı yeniler',
+            'F6': 'Tarayıcı adres çubuğuna gider',
             'Tab': 'Yazı programında sekme/boşluk bırakır, tablolarda hücreler arası geçiş yapar',
             'CapsLock': 'Tamamen büyük veya küçük harf yazmayı açıp kapatır (kilit)',
             'Shift': 'Harfleri geçici olarak büyük yazar, üstteki ikinci karakteri yazar',
@@ -779,7 +785,8 @@
             'ArrowUp': 'Yukarı ok tuşu, imleci yukarı taşır',
             'ArrowDown': 'Aşağı ok tuşu, imleci aşağı taşır',
             'ArrowLeft': 'Sol ok tuşu, imleci sola taşır',
-            'ArrowRight': 'Sağ ok tuşu, imleci sağa taşır'
+            'ArrowRight': 'Sağ ok tuşu, imleci sağa taşır',
+            'NumLock': 'Sağdaki sayı tuş takımını açar/kapatır (kilit)'
         };
         
         // Klavye kısayolları - pencere işlemleri kaldırıldı (N, W, T gerçekten pencere açıp kapatıyor)
