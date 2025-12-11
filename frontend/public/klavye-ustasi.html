@@ -1406,6 +1406,13 @@
                 return;
             }
             
+            // Can kontrolü - 0 veya altındaysa oyun bitmeli
+            if (lives <= 0) {
+                stage1AnswerLocked = true;
+                gameOver();
+                return;
+            }
+            
             // Cevabı kilitle - tekrar tıklanamaz
             stage1AnswerLocked = true;
             clearInterval(timerInterval);
@@ -1416,6 +1423,14 @@
                 // Doğru!
                 keyButton.classList.add('correct');
                 handleCorrectAnswer();
+                
+                // Can kontrolü - 0 veya altındaysa oyun bitir
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        gameOver();
+                    }, 1000);
+                    return;
+                }
                 
                 // 1 saniye sonra yeni soruya geç
                 setTimeout(() => {
@@ -1435,6 +1450,14 @@
                 }, 300);
                 
                 handleWrongAnswer(clickedKey);
+                
+                // Can kontrolü - 0 veya altındaysa oyun bitir
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        gameOver();
+                    }, 2000);
+                    return;
+                }
                 
                 // 2 saniye sonra yeni soruya geç (doğru tuşu görme fırsatı için daha uzun)
                 setTimeout(() => {
