@@ -1041,6 +1041,9 @@
         }
         
         function exitGame() {
+            // ÖNCE oyun durumunu sonlandır
+            isGameOver = true;
+            
             // Tüm interval'leri temizle
             clearInterval(timerInterval);
             clearInterval(fallingKeysInterval);
