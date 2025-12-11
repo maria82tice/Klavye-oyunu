@@ -1659,10 +1659,36 @@
         
         function stage2KeyHandler(e) {
             e.preventDefault();
+            
+            // Oyun bittiyse işlem yapma
+            if (isGameOver) return;
+            
+            // Sadece Shift, Alt, AltGr, Ctrl tuşlarına basılırsa yanlış sayma - kombinasyon bekliyor olabilir
+            if (['Shift', 'Alt', 'Control', 'AltGraph'].includes(e.key)) {
+                return; // Bu tuşları yoksay, yanlış sayma
+            }
+            
             document.removeEventListener('keydown', stage2KeyHandler);
             clearInterval(timerInterval);
             
-            if (e.key.toLowerCase() === currentQuestion.keys[0].toLowerCase()) {
+            // Tek tuş sorularında BÜYÜK/KÜÇÜK HARF önemli değil (sadece küçük harfler sorulduğu için)
+            // Ama eğer özel karakter soruluyorsa tam eşleşme gerekir
+            const expectedKey = currentQuestion.keys[0];
+            const pressedKey = e.key;
+            
+            // Harf mi kontrol et
+            const isLetter = /^[a-zA-ZçÇğĞıİöÖşŞüÜ]$/.test(expectedKey);
+            
+            let isCorrect = false;
+            if (isLetter) {
+                // Harfler için büyük/küçük farketmez
+                isCorrect = pressedKey.toLowerCase() === expectedKey.toLowerCase();
+            } else {
+                // Özel karakterler için tam eşleşme
+                isCorrect = pressedKey === expectedKey;
+            }
+            
+            if (isCorrect) {
                 handleCorrectAnswer();
             } else {
                 handleWrongAnswer(e.key);
