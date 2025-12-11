@@ -1074,10 +1074,13 @@
             updateDisplay();
             showFeedback(true);
             
-            // Bir sonraki soruya geç
-            setTimeout(() => {
-                nextQuestion();
-            }, 1000);
+            // Etap 1 için nextQuestion çağırma (kendi setTimeout'u var)
+            if (currentStage !== 1) {
+                // Bir sonraki soruya geç
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1000);
+            }
         }
         
         function handleWrongAnswer(mistakeKey = null) {
