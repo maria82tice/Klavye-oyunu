@@ -1417,8 +1417,12 @@
         }
         
         function checkStage1Key(clickedKey) {
-            // ÖNCELİKLE can kontrolü - 0 veya altındaysa hiçbir şey yapma
+            // ÖNCELİKLE can kontrolü - 0 veya altındaysa gameOver göster
             if (lives <= 0) {
+                if (!stage1AnswerLocked) {
+                    stage1AnswerLocked = true;
+                    gameOver();
+                }
                 return;
             }
             
